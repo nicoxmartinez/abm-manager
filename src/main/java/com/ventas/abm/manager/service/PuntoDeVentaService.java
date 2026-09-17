@@ -14,8 +14,8 @@ public class PuntoDeVentaService {
 	@Autowired
 	PuntoDeVentaRepository puntoDeVentaRepository;
 
-	private static final Log logger = LogFactory.getLog(AlmacenService.class);
-	
+	private static final Log logger = LogFactory.getLog(PuntoDeVentaService.class);
+
 	public PuntoDeVenta createPuntoDeVenta(PuntoDeVenta puntoDeVenta) {
 		// TODO Auto-generated method stub
 		return null;

@@ -9,6 +9,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,7 +20,7 @@ public class Almacen {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_ALMACEN")
 	private Long idAlmacen;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "ID_TIENDA")
 	private Tienda tienda;
@@ -32,6 +33,10 @@ public class Almacen {
 
 	@Column(name = "FECHA_BAJA")
 	private Date fechaBaja;
+
+	@OneToOne
+	@JoinColumn(name = "ID_DOMICILIO")
+	private Domicilio domicilio;
 
 	public Long getIdAlmacen() {
 		return idAlmacen;
@@ -63,6 +68,22 @@ public class Almacen {
 
 	public void setFechaBaja(Date fechaBaja) {
 		this.fechaBaja = fechaBaja;
+	}
+
+	public Tienda getTienda() {
+		return tienda;
+	}
+
+	public void setTienda(Tienda tienda) {
+		this.tienda = tienda;
+	}
+
+	public Domicilio getDomicilio() {
+		return domicilio;
+	}
+
+	public void setDomicilio(Domicilio domicilio) {
+		this.domicilio = domicilio;
 	}
 
 }

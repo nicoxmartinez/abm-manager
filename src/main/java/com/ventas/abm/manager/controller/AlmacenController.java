@@ -58,17 +58,6 @@ public class AlmacenController {
 		}
 	}
 
-	@GetMapping
-	public ResponseEntity<List<Almacen>> obtenerTodoAlmacen() {
-		try {
-			List<Almacen> almacenes = service.getAllAlmacen();
-			return ResponseEntity.ok(almacenes);
-		} catch (Exception e) {
-			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-		}
-	}
-
 	@GetMapping("/id/{id}")
 	public ResponseEntity<Almacen> obtenerAlmacenPorId(@PathVariable("id") Long idAlmacen) {
 		try {

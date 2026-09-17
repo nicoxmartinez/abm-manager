@@ -33,6 +33,8 @@ public class DomicilioService {
 			domicilioNuevo.setCodigoPostal(domicilio.getCodigoPostal());
 			domicilioNuevo.setProvincia(domicilio.getProvincia());
 			domicilioNuevo.setObservaciones(domicilio.getObservaciones());
+			domicilioNuevo
+					.setDireccion(domicilio.getCalle() + " " + domicilio.getNumero() + " " + domicilio.getLocalidad());
 			domicilioRepository.save(domicilioNuevo);
 			logMensaje = "Registrada correctamente Domicilio: " + domicilioNuevo.getCalle() + " "
 					+ domicilioNuevo.getLocalidad() + "" + domicilioNuevo.getPartido() + " "
@@ -50,14 +52,9 @@ public class DomicilioService {
 		// TODO Auto-generated method stub
 		String logMensaje = "Modificando registro Domicilio ID: " + domicilio.getIdDomicilio();
 		logger.info(logMensaje);
-		Optional<Domicilio> optional = domicilioRepository.findById(domicilio.getIdDomicilio());
-		if (optional.isPresent()) {
-			logMensaje = "No existe un Domicilio con ID: " + domicilio.getIdDomicilio();
-			logger.error(logMensaje);
-			throw new Exception(logMensaje);
-		}
-		Domicilio domicilioEnBd = optional.get();
-		try {
+		Optional<Domicilio> domicilioOptional = domicilioRepository.findById(domicilio.getIdDomicilio());
+		if (domicilioOptional.isPresent()) {
+			Domicilio domicilioEnBd = domicilioOptional.get();
 			domicilioEnBd.setCalle(domicilio.getCalle());
 			domicilioEnBd.setNumero(domicilio.getNumero());
 			domicilioEnBd.setEntreCalles(domicilio.getEntreCalles());
@@ -66,14 +63,29 @@ public class DomicilioService {
 			domicilioEnBd.setCodigoPostal(domicilio.getCodigoPostal());
 			domicilioEnBd.setProvincia(domicilio.getProvincia());
 			domicilioEnBd.setObservaciones(domicilio.getObservaciones());
+			domicilioEnBd
+					.setDireccion(domicilio.getCalle() + " " + domicilio.getNumero() + " " + domicilio.getLocalidad());
 			Domicilio domicilioModificado = domicilioRepository.save(domicilioEnBd);
 			logMensaje = "Modificado correctamente Domicilio ID: " + domicilioModificado.getIdDomicilio();
 			logger.info(logMensaje);
 			return domicilioModificado;
-		} catch (Exception e) {
-			logMensaje = e.getMessage();
+		} else {
+			logMensaje = "No existe un Domicilio con ID: " + domicilio.getIdDomicilio();
 			logger.error(logMensaje);
 			throw new Exception(logMensaje);
+		}
+	}
+
+	public void deleteDomicilio(Long idDomicilio) {
+		String logMensaje = "Eliminando registro Domicilio ID: " + idDomicilio;
+		logger.info(logMensaje);
+		Optional<Domicilio> domicilioOptional = domicilioRepository.findById(idDomicilio);
+		if (domicilioOptional.isPresent()) {
+			Domicilio domicilio = domicilioOptional.get();
+			domicilioRepository.delete(domicilio);
+			logger.info("Domicilio eliminado correctamente con ID: " + idDomicilio);
+		} else {
+			logger.error("No se encontró Domicilio con el ID: " + idDomicilio);
 		}
 	}
 

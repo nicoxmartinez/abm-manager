@@ -43,11 +43,11 @@ public class MedioDePago {
 
 	@Column(name = "FECHA_BAJA")
 	private Date fechaBaja;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "ID_FINANCIACION")
 	private Financiacion financiacion;
-	
+
 	public Long getIdMedioPago() {
 		return idMedioPago;
 	}
@@ -118,6 +118,14 @@ public class MedioDePago {
 
 	public void setFechaBaja(Date fechaBaja) {
 		this.fechaBaja = fechaBaja;
+	}
+
+	public Financiacion getFinanciacion() {
+		return financiacion;
+	}
+
+	public void setFinanciacion(Financiacion financiacion) {
+		this.financiacion = financiacion;
 	}
 
 }

@@ -70,7 +70,7 @@ public class TiendaController {
 	}
 
 	@GetMapping("/codigo/{codigo}")
-	public ResponseEntity<Tienda> obtenerTiendaPorCodigo(@PathVariable Integer codigo) {
+	public ResponseEntity<Tienda> obtenerTiendaPorCodigo(@PathVariable String codigo) {
 		try {
 			Tienda tienda = service.getTiendaByCodigo(codigo);
 			return ResponseEntity.ok(tienda);
