@@ -1,5 +1,7 @@
 package com.ventas.abm.manager.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -67,10 +69,10 @@ public class PuntoDeVentaController {
 	}
 
 	@GetMapping("/nombre/{nombre}")
-	public ResponseEntity<PuntoDeVenta> obtenerPuntoDeVentaPorNombre(@PathVariable String nombre) {
+	public ResponseEntity<List<PuntoDeVenta>> obtenerPuntoDeVentaPorNombre(@PathVariable String nombre) {
 		try {
-			PuntoDeVenta puntoDeVenta = service.getPuntoDeVentaByNombre(nombre);
-			return ResponseEntity.ok(puntoDeVenta);
+			List<PuntoDeVenta> puntosDeVenta = service.getPuntoDeVentaByNombre(nombre);
+			return ResponseEntity.ok(puntosDeVenta);
 		} catch (Exception e) {
 			// TODO: handle exception
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
