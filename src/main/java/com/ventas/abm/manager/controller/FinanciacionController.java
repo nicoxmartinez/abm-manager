@@ -18,14 +18,13 @@ import org.springframework.web.server.ResponseStatusException;
 import com.ventas.abm.manager.domain.Financiacion;
 import com.ventas.abm.manager.service.FinanciacionService;
 
-
 @RestController
 @RequestMapping("/financiacion")
 public class FinanciacionController {
 
 	@Autowired
 	FinanciacionService service;
-	
+
 	@PostMapping
 	public ResponseEntity<Financiacion> crearFinanciacion(@RequestBody Financiacion financiacion) {
 		try {
@@ -36,34 +35,23 @@ public class FinanciacionController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
 	}
-	
+
 	@PutMapping
 	public ResponseEntity<Financiacion> modificarFinanciacion(@RequestBody Financiacion financiacion) {
 		try {
 			Financiacion modificarFinanciacion = service.modifyFinanciacion(financiacion);
-            return ResponseEntity.ok(modificarFinanciacion);
+			return ResponseEntity.ok(modificarFinanciacion);
 		} catch (Exception e) {
 			// TODO: handle exception
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Financiacion> bajaFinanciacion(@PathVariable Long id) {
 		try {
 			Financiacion financiacion = service.deleteFinanciacion(id);
 			return ResponseEntity.ok(financiacion);
-		} catch (Exception e) {
-			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-		}
-	}
-	
-	@GetMapping
-	public ResponseEntity<List<Financiacion>> obtenerTodoFinanciacion() {
-		try {
-			List<Financiacion> financiaciones = service.getAllFinanciacion();
-			return ResponseEntity.ok(financiaciones);
 		} catch (Exception e) {
 			// TODO: handle exception
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -80,11 +68,11 @@ public class FinanciacionController {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
 	}
-	
+
 	@GetMapping("/id/{id}")
-	public ResponseEntity<Financiacion> obtenerFinanciacionPorId(@PathVariable Long id) {
+	public ResponseEntity<Financiacion> obtenerFinanciacionPorId(@PathVariable Long idFinanciacion) {
 		try {
-			Financiacion financiacion = service.getFinanciacionById(id);
+			Financiacion financiacion = service.getFinanciacionById(idFinanciacion);
 			return ResponseEntity.ok(financiacion);
 		} catch (Exception e) {
 			// TODO: handle exception
