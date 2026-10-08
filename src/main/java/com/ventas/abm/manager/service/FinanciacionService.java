@@ -24,7 +24,7 @@ public class FinanciacionService {
 	@Autowired
 	PlanCuotaService planCuotaService;
 
-	private static final Log logger = LogFactory.getLog(AlmacenService.class);
+	private static final Log logger = LogFactory.getLog(FinanciacionService.class);
 
 	@Transactional
 	public Financiacion createFinanciacion(Financiacion financiacion) throws Exception {
@@ -51,17 +51,19 @@ public class FinanciacionService {
 		nuevaFinanciacion.setDescripcion(financiacion.getDescripcion());
 		nuevaFinanciacion.setActiva(financiacion.getActiva());
 
+		nuevaFinanciacion = financiacionRepository.save(nuevaFinanciacion);
+		
 		List<PlanCuota> listaNuevaPlanesCuotas = new ArrayList<>();
 		if (financiacion.getPlanCuota() != null) {
 			List<PlanCuota> listaPlanesCuotas = financiacion.getPlanCuota();
 			for (PlanCuota pc : listaPlanesCuotas) {
 				PlanCuota nuevoPlanCuota = planCuotaService.createPlanCuota(pc);
+				pc.setFinanciacion(nuevaFinanciacion);
 				listaNuevaPlanesCuotas.add(nuevoPlanCuota);
 			}
 			nuevaFinanciacion.setPlanCuota(listaPlanesCuotas);
 		}
 
-		nuevaFinanciacion = financiacionRepository.save(nuevaFinanciacion);
 		logMensaje = "Creado correctamente " + "Financiacion: " + nuevaFinanciacion.getCodigo() + " "
 				+ nuevaFinanciacion.getDescripcion();
 		logger.info(logMensaje);
@@ -105,6 +107,7 @@ public class FinanciacionService {
 				}
 				if (planesNew != null && !planesNew.isEmpty()) {
 					for (PlanCuota pc : planesNew) {
+						pc.setFinanciacion(financiacion);
 						PlanCuota pcDb = planCuotaService.createPlanCuota(pc);
 						if (pcDb == null) {
 							logger.error("No se encontró el PlanCuota con id " + pc.getId());

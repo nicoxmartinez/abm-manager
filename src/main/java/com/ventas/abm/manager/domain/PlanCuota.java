@@ -52,4 +52,12 @@ public class PlanCuota {
 		this.interes = interes;
 	}
 
+	public Financiacion getFinanciacion() {
+		return financiacion;
+	}
+
+	public void setFinanciacion(Financiacion financiacion) {
+		this.financiacion = financiacion;
+	}
+
 }
