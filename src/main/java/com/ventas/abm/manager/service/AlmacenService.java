@@ -34,11 +34,11 @@ public class AlmacenService {
 	@Transactional
 	public Almacen createAlmacen(Almacen almacen) throws Exception {
 		// TODO Auto-generated method stub
-		String logMensaje = "Creando registro de Almacén";
+		String logMensaje = "Creando registro de Almacén: " + almacen.getCodigo() + " " + almacen.getDescripcion();
 		logger.info(logMensaje);
 		Optional<Almacen> verificarCodigoAlmacen = almacenRepository.findByCodigo(almacen.getCodigo());
 		if (verificarCodigoAlmacen.isPresent()) {
-			logMensaje = "Existe un registro de Almacen con el Código " + almacen.getCodigo();
+			logMensaje = "Existe un registro de Almacen con el Código: " + almacen.getCodigo();
 			logger.error(logMensaje);
 			throw new Exception(logMensaje);
 		}
@@ -69,6 +69,7 @@ public class AlmacenService {
 			// TODO: handle exception
 			logMensaje = e.getMessage();
 			logger.error(logMensaje);
+			e.printStackTrace();
 			throw new Exception(logMensaje);
 		}
 		return almacenNuevo;

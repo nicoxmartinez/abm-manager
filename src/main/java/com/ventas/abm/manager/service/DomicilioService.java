@@ -1,6 +1,5 @@
 package com.ventas.abm.manager.service;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.apache.juli.logging.Log;
@@ -27,22 +26,22 @@ public class DomicilioService {
 		try {
 			domicilioNuevo.setCalle(domicilio.getCalle());
 			domicilioNuevo.setNumero(domicilio.getNumero());
-			domicilioNuevo.setEntreCalles(domicilio.getEntreCalles());
 			domicilioNuevo.setLocalidad(domicilio.getLocalidad());
 			domicilioNuevo.setPartido(domicilio.getPartido());
 			domicilioNuevo.setCodigoPostal(domicilio.getCodigoPostal());
+			domicilioNuevo.setEntreCalles(domicilio.getEntreCalles());
 			domicilioNuevo.setProvincia(domicilio.getProvincia());
-			domicilioNuevo.setObservaciones(domicilio.getObservaciones());
-			domicilioNuevo
-					.setDireccion(domicilio.getCalle() + " " + domicilio.getNumero() + " " + domicilio.getLocalidad());
+			domicilioNuevo.setPais(domicilio.getPais());
 			domicilioRepository.save(domicilioNuevo);
 			logMensaje = "Registrada correctamente Domicilio: " + domicilioNuevo.getCalle() + " "
 					+ domicilioNuevo.getLocalidad() + "" + domicilioNuevo.getPartido() + " "
 					+ domicilioNuevo.getProvincia();
 			logger.info(logMensaje);
 		} catch (Exception e) {
+			// TODO: handle exception
 			logMensaje = e.getMessage();
 			logger.error(logMensaje);
+			e.printStackTrace();
 			throw new Exception(logMensaje);
 		}
 		return domicilioNuevo;
@@ -62,9 +61,7 @@ public class DomicilioService {
 			domicilioEnBd.setPartido(domicilio.getPartido());
 			domicilioEnBd.setCodigoPostal(domicilio.getCodigoPostal());
 			domicilioEnBd.setProvincia(domicilio.getProvincia());
-			domicilioEnBd.setObservaciones(domicilio.getObservaciones());
-			domicilioEnBd
-					.setDireccion(domicilio.getCalle() + " " + domicilio.getNumero() + " " + domicilio.getLocalidad());
+			domicilioEnBd.setPais(domicilio.getPais());
 			Domicilio domicilioModificado = domicilioRepository.save(domicilioEnBd);
 			logMensaje = "Modificado correctamente Domicilio ID: " + domicilioModificado.getIdDomicilio();
 			logger.info(logMensaje);
@@ -77,6 +74,7 @@ public class DomicilioService {
 	}
 
 	public void deleteDomicilio(Long idDomicilio) {
+		// TODO Auto-generated method stub
 		String logMensaje = "Eliminando registro Domicilio ID: " + idDomicilio;
 		logger.info(logMensaje);
 		Optional<Domicilio> domicilioOptional = domicilioRepository.findById(idDomicilio);
@@ -99,20 +97,10 @@ public class DomicilioService {
 			}
 			return domicilio;
 		} catch (Exception e) {
+			// TODO: handle exception
 			logger.error("No se encontró Domicilio con el ID: " + idDomicilio);
 			return null;
 		}
-	}
-
-	public List<Domicilio> getDomicilioByDireccion(String direccion) throws Exception {
-		// TODO Auto-generated method stub
-		List<Domicilio> listaDomicilios = domicilioRepository.findByDireccionLike(direccion);
-		if (listaDomicilios.isEmpty()) {
-			String logMensaje = "No se encontró Dirección: " + direccion;
-			logger.error(logMensaje);
-			throw new Exception(logMensaje);
-		}
-		return listaDomicilios;
 	}
 
 }

@@ -4,50 +4,76 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "TIENDA")
-public class Tienda implements Serializable{
+public class Tienda implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_TIENDA")
-    private Long idTienda;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "ID_TIENDA")
+	private Long idTienda;
 
-    @Column(name = "DESCRIPCION")
-    private String descripcion;
+	@Column(name = "CODIGO")
+	private String codigo;
 
-    @Column(name = "CODIGO")
-    private String codigo;
-    
-    @OneToOne
-    @JoinColumn(name = "ID_DOMICILIO")
-    private Domicilio domicilio;
+	@Column(name = "DESCRIPCION")
+	private String descripcion;
 
-    @OneToMany
-    @OrderBy(value="ID_ALMACEN")
-    private List<Almacen> almacenes;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "TIPO", nullable = false)
+	private TipoTienda tipo;
 
-    @Column(name = "TELEFONO")
-    private String telefono;
+	@Column(name = "USUARIO")
+	private String usuario;
 
-    @Column(name = "FECHA_BAJA")
-    private Date fechaBaja;
+	@Column(name = "EMAIL")
+	private String email;
 
-    @Column(name = "MAIL_CONTACTO")
-    private String mailContacto;
+	@Column(name = "TELEFONO")
+	private String telefono;
+
+	@OneToMany
+	@OrderBy(value = "ID_ALMACEN")
+	@JsonManagedReference
+	private List<Almacen> almacenes;
+
+	@Column(name = "FECHA_ALTA")
+	private Date fechaAlta;
+
+	@Column(name = "FECHA_BAJA")
+	private Date fechaBaja;
+
+	public Tienda() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public Tienda(Long idTienda, String codigo, String descripcion, TipoTienda tipo, String usuario, String email,
+			String telefono) {
+		super();
+		this.idTienda = idTienda;
+		this.codigo = codigo;
+		this.descripcion = descripcion;
+		this.tipo = tipo;
+		this.usuario = usuario;
+		this.email = email;
+		this.telefono = telefono;
+	}
 
 	public Long getIdTienda() {
 		return idTienda;
@@ -55,14 +81,6 @@ public class Tienda implements Serializable{
 
 	public void setIdTienda(Long idTienda) {
 		this.idTienda = idTienda;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
 	}
 
 	public String getCodigo() {
@@ -73,20 +91,36 @@ public class Tienda implements Serializable{
 		this.codigo = codigo;
 	}
 
-	public List<Almacen> getAlmacenes() {
-		return almacenes;
+	public String getDescripcion() {
+		return descripcion;
 	}
 
-	public void setAlmacenes(List<Almacen> almacenes) {
-		this.almacenes = almacenes;
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
 	}
 
-	public Domicilio getDomicilio() {
-		return domicilio;
+	public TipoTienda getTipo() {
+		return tipo;
 	}
 
-	public void setDomicilio(Domicilio domicilio) {
-		this.domicilio = domicilio;
+	public void setTipo(TipoTienda tipo) {
+		this.tipo = tipo;
+	}
+
+	public String getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(String usuario) {
+		this.usuario = usuario;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getTelefono() {
@@ -97,6 +131,22 @@ public class Tienda implements Serializable{
 		this.telefono = telefono;
 	}
 
+	public List<Almacen> getAlmacenes() {
+		return almacenes;
+	}
+
+	public void setAlmacenes(List<Almacen> almacenes) {
+		this.almacenes = almacenes;
+	}
+
+	public Date getFechaAlta() {
+		return fechaAlta;
+	}
+
+	public void setFechaAlta(Date fechaAlta) {
+		this.fechaAlta = fechaAlta;
+	}
+
 	public Date getFechaBaja() {
 		return fechaBaja;
 	}
@@ -105,17 +155,8 @@ public class Tienda implements Serializable{
 		this.fechaBaja = fechaBaja;
 	}
 
-	public String getMailContacto() {
-		return mailContacto;
-	}
-
-	public void setMailContacto(String mailContacto) {
-		this.mailContacto = mailContacto;
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-    
+
 }
-	

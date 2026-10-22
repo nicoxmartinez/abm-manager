@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ventas.abm.manager.domain.PuntoDeVenta;
-import com.ventas.abm.manager.domain.Tienda;
 import com.ventas.abm.manager.repository.PuntoDeVentaRepository;
 
 @Service
@@ -28,27 +27,11 @@ public class PuntoDeVentaService {
 		String logMensaje = "Creando registro de Punto de Venta";
 		logger.info(logMensaje);
 		PuntoDeVenta puntoDeVentaNuevo = new PuntoDeVenta();
-		if (puntoDeVenta.getTienda() != null) {
-			Tienda tienda = tiendaService.getTiendaById(puntoDeVenta.getTienda().getIdTienda());
-			if (tienda != null) {
-				puntoDeVentaNuevo.setTienda(tienda);
-			} else {
-				logMensaje = "No existe un registro de Tienda " + puntoDeVenta.getTienda().getCodigo() + " "
-						+ puntoDeVenta.getTienda().getDescripcion();
-				logger.error(logMensaje);
-				throw new Exception(logMensaje);
-			}
-		} else {
-			logMensaje = "Seleccionar una Tienda es obligatorio";
-			logger.error(logMensaje);
-			throw new Exception(logMensaje);
-		}
-		if (puntoDeVenta.getNumero() != null) {
-
+		if (puntoDeVenta.getNumeroTerminal() != null) {
 			Optional<PuntoDeVenta> verificarNumeroDePunto = puntoDeVentaRepository
-					.findByNumero(puntoDeVenta.getNumero());
+					.findByNumeroTerminal(puntoDeVenta.getNumeroTerminal());
 			if (verificarNumeroDePunto.isPresent()) {
-				logMensaje = "Existe un Punto de Venta con el Número " + puntoDeVenta.getNumero();
+				logMensaje = "Existe un Punto de Venta con el número de terminal" + puntoDeVenta.getNombreTerminal();
 				logger.error(logMensaje);
 				throw new Exception(logMensaje);
 			}
@@ -58,18 +41,17 @@ public class PuntoDeVentaService {
 			throw new Exception(logMensaje);
 		}
 		try {
-			puntoDeVentaNuevo.setNombre(puntoDeVenta.getNombre());
-			puntoDeVentaNuevo.setNumero(puntoDeVenta.getNumero());
-			puntoDeVentaNuevo.setUsuario(puntoDeVenta.getUsuario());
+			puntoDeVentaNuevo.setNumeroTerminal(puntoDeVenta.getNumeroTerminal());
+			puntoDeVentaNuevo.setNombreTerminal(puntoDeVenta.getNombreTerminal());
 			puntoDeVentaNuevo.setNumeroDeCaja(puntoDeVenta.getNumeroDeCaja());
 			puntoDeVentaRepository.save(puntoDeVentaNuevo);
-			logMensaje = "Registrada correctamente Tienda: " + puntoDeVentaNuevo.getNumero() + " "
-					+ puntoDeVentaNuevo.getNombre();
+			logMensaje = "Registrada correctamente Tienda: " + puntoDeVentaNuevo.getNumeroTerminal();
 			logger.info(logMensaje);
 		} catch (Exception e) {
 			// TODO: handle exception
 			logMensaje = e.getMessage();
 			logger.error(logMensaje);
+			e.printStackTrace();
 			throw new Exception(logMensaje);
 
 		}
@@ -78,64 +60,57 @@ public class PuntoDeVentaService {
 
 	public PuntoDeVenta modifyPuntoDeVenta(PuntoDeVenta puntoDeVenta) throws Exception {
 		// TODO Auto-generated method stub
-		String logMensaje = "Modificando registro Tienda ID: " + puntoDeVenta.getId();
+		String logMensaje = "Modificando registro Tienda ID: " + puntoDeVenta.getIdPuntoDeVenta();
 		logger.info(logMensaje);
-		Optional<PuntoDeVenta> puntoDeVentaOptional = puntoDeVentaRepository.findById(puntoDeVenta.getId());
+		Optional<PuntoDeVenta> puntoDeVentaOptional = puntoDeVentaRepository.findById(puntoDeVenta.getIdPuntoDeVenta());
 		if (puntoDeVentaOptional.isPresent()) {
 			PuntoDeVenta puntoDeVentaEnBd = puntoDeVentaOptional.get();
-			if (puntoDeVenta.getTienda() != null) {
-				Tienda tienda = tiendaService.getTiendaById(puntoDeVenta.getTienda().getIdTienda());
-				if (tienda != null) {
-					puntoDeVentaEnBd.setTienda(tienda);
-				}
-			}
-			puntoDeVentaEnBd.setNumero(puntoDeVenta.getNumero());
-			puntoDeVentaEnBd.setNombre(puntoDeVenta.getNombre());
-			puntoDeVentaEnBd.setUsuario(puntoDeVenta.getUsuario());
+			puntoDeVentaEnBd.setNumeroTerminal(puntoDeVenta.getNumeroTerminal());
+			puntoDeVentaEnBd.setNombreTerminal(puntoDeVenta.getNombreTerminal());
 			puntoDeVentaEnBd.setNumeroDeCaja(puntoDeVenta.getNumeroDeCaja());
 			PuntoDeVenta puntoDeVentaModificado = puntoDeVentaRepository.save(puntoDeVentaEnBd);
-			logMensaje = "Modificado correctamente Tienda ID: " + puntoDeVentaModificado.getId();
+			logMensaje = "Modificado correctamente Punto De Venta ID: " + puntoDeVentaModificado.getNumeroTerminal();
 			logger.info(logMensaje);
 			return puntoDeVentaModificado;
 		} else {
-			logMensaje = "No existe un Punto de Venta con ID: " + puntoDeVenta.getId();
+			logMensaje = "No existe un Punto de Venta con ID: " + puntoDeVenta.getIdPuntoDeVenta();
 			logger.error(logMensaje);
 			throw new Exception(logMensaje);
 		}
 	}
 
-	public PuntoDeVenta getPuntoDeVentaById(Long id) {
+	public PuntoDeVenta getPuntoDeVentaById(Long idPuntoDeVenta) {
 		// TODO Auto-generated method stub
-		Optional<PuntoDeVenta> puntoDeVentaOptional = puntoDeVentaRepository.findById(id);
+		Optional<PuntoDeVenta> puntoDeVentaOptional = puntoDeVentaRepository.findById(idPuntoDeVenta);
 		if (puntoDeVentaOptional.isPresent()) {
 			PuntoDeVenta puntoDeVenta = puntoDeVentaOptional.get();
 			return puntoDeVenta;
 		} else {
-			logger.error("No se encontró Punto de Venta con el ID: " + id);
+			logger.error("No se encontró Punto de Venta con el ID: " + idPuntoDeVenta);
 			return null;
 		}
 	}
 
-	public PuntoDeVenta getPuntoDeVentaByNumero(Integer numero) throws Exception {
+	public PuntoDeVenta getPuntoDeVentaByNumeroTerminal(Integer numeroTerminal) throws Exception {
 		// TODO Auto-generated method stub
-		Optional<PuntoDeVenta> puntoDeVentaOptional = puntoDeVentaRepository.findByNumero(numero);
+		Optional<PuntoDeVenta> puntoDeVentaOptional = puntoDeVentaRepository.findByNumeroTerminal(numeroTerminal);
 		if (puntoDeVentaOptional.isPresent()) {
 			PuntoDeVenta puntoDeVenta = puntoDeVentaOptional.get();
 			return puntoDeVenta;
 		} else {
-			String logMensaje = "No se encontró Punto de Venta con el Número: " + numero;
+			String logMensaje = "No se encontró Punto de Venta con el Número de terminal: " + numeroTerminal;
 			logger.error(logMensaje);
 			throw new Exception(logMensaje);
 		}
 	}
 
-	public List<PuntoDeVenta> getPuntoDeVentaByNombre(String nombre) throws Exception {
+	public List<PuntoDeVenta> getPuntoDeVentaByNombreTerminal(String nombreTerminal) throws Exception {
 		// TODO Auto-generated method stub
-		List<PuntoDeVenta> listaPuntosDeVenta = puntoDeVentaRepository.findByNombreLike(nombre);
+		List<PuntoDeVenta> listaPuntosDeVenta = puntoDeVentaRepository.findByNombreTerminalLike(nombreTerminal);
 		if (!listaPuntosDeVenta.isEmpty()) {
 			return listaPuntosDeVenta;
 		} else {
-			String logMensaje = "No se encontraron Punto de Venta con el nombre: " + nombre;
+			String logMensaje = "No se encontraron Punto de Venta con el nombre de terminal: " + nombreTerminal;
 			logger.error(logMensaje);
 			throw new Exception(logMensaje);
 		}

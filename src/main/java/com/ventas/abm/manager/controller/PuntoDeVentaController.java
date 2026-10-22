@@ -47,9 +47,9 @@ public class PuntoDeVentaController {
 	}
 
 	@GetMapping("/id/{id}")
-	public ResponseEntity<PuntoDeVenta> obtenerPuntoDeVentaPorId(@PathVariable Long id) {
+	public ResponseEntity<PuntoDeVenta> obtenerPuntoDeVentaPorId(@PathVariable("id") Long idPuntoDeVenta) {
 		try {
-			PuntoDeVenta puntoDeVenta = service.getPuntoDeVentaById(id);
+			PuntoDeVenta puntoDeVenta = service.getPuntoDeVentaById(idPuntoDeVenta);
 			return ResponseEntity.ok(puntoDeVenta);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -57,10 +57,11 @@ public class PuntoDeVentaController {
 		}
 	}
 
-	@GetMapping("/numero/{numero}")
-	public ResponseEntity<PuntoDeVenta> obtenerPuntoDeVentaPorNumero(@PathVariable Integer numero) {
+	@GetMapping("/numero/{numeroTerminal}")
+	public ResponseEntity<PuntoDeVenta> obtenerPuntoDeVentaPorNumero(
+			@PathVariable("numeroTerminal") Integer numeroTerminal) {
 		try {
-			PuntoDeVenta puntoDeVenta = service.getPuntoDeVentaByNumero(numero);
+			PuntoDeVenta puntoDeVenta = service.getPuntoDeVentaByNumeroTerminal(numeroTerminal);
 			return ResponseEntity.ok(puntoDeVenta);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -68,10 +69,11 @@ public class PuntoDeVentaController {
 		}
 	}
 
-	@GetMapping("/nombre/{nombre}")
-	public ResponseEntity<List<PuntoDeVenta>> obtenerPuntoDeVentaPorNombre(@PathVariable String nombre) {
+	@GetMapping("/nombre/{nombreTerminal}")
+	public ResponseEntity<List<PuntoDeVenta>> obtenerPuntoDeVentaPorNombre(
+			@PathVariable("nombreTerminal") String nombreTerminal) {
 		try {
-			List<PuntoDeVenta> puntosDeVenta = service.getPuntoDeVentaByNombre(nombre);
+			List<PuntoDeVenta> puntosDeVenta = service.getPuntoDeVentaByNombreTerminal(nombreTerminal);
 			return ResponseEntity.ok(puntosDeVenta);
 		} catch (Exception e) {
 			// TODO: handle exception

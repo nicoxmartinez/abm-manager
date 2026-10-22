@@ -48,9 +48,9 @@ public class MedioDePagoController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<MedioDePago> bajaMedioDePago(@PathVariable Long id) {
+	public ResponseEntity<MedioDePago> bajaMedioDePago(@PathVariable("id") Long idMedioPago) {
 		try {
-			MedioDePago medioDePago = service.deleteMedioDePago(id);
+			MedioDePago medioDePago = service.deleteMedioDePago(idMedioPago);
 			return ResponseEntity.ok(medioDePago);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -69,9 +69,9 @@ public class MedioDePagoController {
 	}
 
 	@GetMapping("/id/{id}")
-	public ResponseEntity<MedioDePago> obtenerMedioDePagoPorId(@PathVariable Long id) {
+	public ResponseEntity<MedioDePago> obtenerMedioDePagoPorId(@PathVariable("id") Long idMedioPago) {
 		try {
-			MedioDePago medioDePago = service.getMedioDePagoById(id);
+			MedioDePago medioDePago = service.getMedioDePagoById(idMedioPago);
 			return ResponseEntity.ok(medioDePago);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -80,7 +80,7 @@ public class MedioDePagoController {
 	}
 
 	@GetMapping("/codigo/{codigo}")
-	public ResponseEntity<MedioDePago> obtenerMedioDePagoPorCodigo(@PathVariable Integer codigo) {
+	public ResponseEntity<MedioDePago> obtenerMedioDePagoPorCodigo(@PathVariable("codigo") Integer codigo) {
 		try {
 			MedioDePago medioDePago = service.getMedioDePagoByCodigo(codigo);
 			return ResponseEntity.ok(medioDePago);
@@ -91,7 +91,7 @@ public class MedioDePagoController {
 	}
 
 	@GetMapping("/detalle/{detalle}")
-	public ResponseEntity<List<MedioDePago>> obtenerMedioDePagoPorDetalle(@PathVariable String detalle) {
+	public ResponseEntity<List<MedioDePago>> obtenerMedioDePagoPorDetalle(@PathVariable("detalle") String detalle) {
 		try {
 			List<MedioDePago> mediosDePago = service.getMedioDePagoByDetalle(detalle);
 			return ResponseEntity.ok(mediosDePago);

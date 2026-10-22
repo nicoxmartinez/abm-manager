@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.ventas.abm.manager.domain.Financiacion;
 import com.ventas.abm.manager.domain.MedioDePago;
+import com.ventas.abm.manager.domain.TipoMedioPago;
 import com.ventas.abm.manager.repository.MedioDePagoRepository;
 
 @Service
@@ -26,7 +27,8 @@ public class MedioDePagoService {
 
 	public MedioDePago createMedioDePago(MedioDePago medioDePago) throws Exception {
 		// TODO Auto-generated method stub
-		String logMensaje = "Creando registro Medio de Pago";
+		String logMensaje = "Creando registro Medio de Pago: " + medioDePago.getCodigo() + " "
+				+ medioDePago.getDetalle();
 		logger.info(logMensaje);
 		Optional<MedioDePago> verificarMedioDePago = medioDePagoRepository.findByCodigo(medioDePago.getCodigo());
 		if (verificarMedioDePago.isPresent()) {
@@ -39,10 +41,10 @@ public class MedioDePagoService {
 			medioDePagoNuevo.setCodigo(medioDePago.getCodigo());
 			medioDePagoNuevo.setDetalle(medioDePago.getDetalle());
 			medioDePagoNuevo.setAbreviatura(medioDePago.getAbreviatura());
+			TipoMedioPago tipoMedioPago = medioDePago.getTipo();
+			medioDePagoNuevo.setTipo(tipoMedioPago);
 			medioDePagoNuevo.setHabilitado(medioDePago.getHabilitado());
-			medioDePagoNuevo.setCantidadMaximaCuotas(medioDePago.getCantidadMaximaCuotas());
 			medioDePagoNuevo.setPermiteBonificacion(medioDePago.getPermiteBonificacion());
-			medioDePagoNuevo.setTipoTarjeta(medioDePago.getTipoTarjeta());
 			medioDePagoNuevo.setFechaBaja(null);
 			if (medioDePago.getFinanciacion() != null) {
 				Financiacion financiacion = financiacionService
@@ -59,6 +61,7 @@ public class MedioDePagoService {
 			// TODO: handle exception
 			logMensaje = e.getMessage();
 			logger.error(logMensaje);
+			e.printStackTrace();
 			throw new Exception(logMensaje);
 		}
 		return medioDePagoNuevo;
@@ -74,9 +77,10 @@ public class MedioDePagoService {
 			medioDePagoEnBd.setCodigo(medioDePago.getCodigo());
 			medioDePagoEnBd.setDetalle(medioDePago.getDetalle());
 			medioDePagoEnBd.setAbreviatura(medioDePago.getAbreviatura());
+			TipoMedioPago tipoMedioPago = medioDePago.getTipo();
+			medioDePagoEnBd.setTipo(tipoMedioPago);
 			medioDePagoEnBd.setHabilitado(medioDePago.getHabilitado());
 			medioDePagoEnBd.setPermiteBonificacion(medioDePago.getPermiteBonificacion());
-			medioDePagoEnBd.setTipoTarjeta(medioDePago.getTipoTarjeta());
 			medioDePagoEnBd.setFechaBaja(medioDePago.getFechaBaja());
 			if (medioDePago.getFinanciacion() != null) {
 				Financiacion financiacion = financiacionService
@@ -132,16 +136,13 @@ public class MedioDePagoService {
 	public MedioDePago getMedioDePagoById(Long idMedioPago) throws Exception {
 		// TODO Auto-generated method stub
 		MedioDePago medioDePago = new MedioDePago();
-		try {
-			Optional<MedioDePago> medioDepagoOptional = medioDePagoRepository.findById(idMedioPago);
-			if (medioDepagoOptional.isPresent()) {
-				medioDePago = medioDepagoOptional.get();
-			}
+		Optional<MedioDePago> medioDepagoOptional = medioDePagoRepository.findById(idMedioPago);
+		if (medioDepagoOptional.isPresent()) {
+			medioDePago = medioDepagoOptional.get();
 			return medioDePago;
-		} catch (Exception e) {
-			String logMensaje = "No se encontró Medio de Pago con el ID: " + idMedioPago;
-			logger.error(logMensaje);
-			throw new Exception(logMensaje);
+		} else {
+			logger.error("No se encontró Medio de Pago con el ID: " + idMedioPago);
+			return null;
 		}
 	}
 
@@ -165,7 +166,7 @@ public class MedioDePagoService {
 			String logMensaje = "No se encontró Medio de Pago: " + detalle;
 			logger.error(logMensaje);
 			throw new Exception(logMensaje);
-		} else {	
+		} else {
 			return listaMedioDePago;
 		}
 	}

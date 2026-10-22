@@ -1,6 +1,9 @@
 package com.ventas.abm.manager.domain;
 
+import java.io.Serializable;
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -14,7 +17,9 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "ALMACEN")
-public class Almacen {
+public class Almacen implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +28,7 @@ public class Almacen {
 
 	@ManyToOne
 	@JoinColumn(name = "ID_TIENDA")
+	@JsonBackReference
 	private Tienda tienda;
 
 	@Column(name = "CODIGO")
@@ -37,6 +43,19 @@ public class Almacen {
 	@OneToOne
 	@JoinColumn(name = "ID_DOMICILIO")
 	private Domicilio domicilio;
+
+	public Almacen() {
+		// TODO Auto-generated constructor stub
+		super();
+	}
+
+	public Almacen(Long idAlmacen, Tienda tienda, String codigo, String descripcion, Domicilio domicilio) {
+		this.idAlmacen = idAlmacen;
+		this.tienda = tienda;
+		this.codigo = codigo;
+		this.descripcion = descripcion;
+		this.domicilio = domicilio;
+	}
 
 	public Long getIdAlmacen() {
 		return idAlmacen;
@@ -84,6 +103,10 @@ public class Almacen {
 
 	public void setDomicilio(Domicilio domicilio) {
 		this.domicilio = domicilio;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }

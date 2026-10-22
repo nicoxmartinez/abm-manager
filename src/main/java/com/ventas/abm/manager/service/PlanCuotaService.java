@@ -26,13 +26,15 @@ public class PlanCuotaService {
 		try {
 			planCuotaNuevo.setCantidadCuotas(planCuota.getCantidadCuotas());
 			planCuotaNuevo.setInteres(planCuota.getInteres());
-
+			planCuotaNuevo.setFinanciacion(planCuota.getFinanciacion());
+			
 			planCuotaRepository.save(planCuotaNuevo);
 			logMensaje = "Registrada correctamente ID: " + planCuotaNuevo.getId();
 			logger.info(logMensaje);
 			return planCuotaNuevo;
 		} catch (Exception e) {
-			logMensaje = "Ocurrió un error en el proceso: " + e.getMessage();
+			// TODO: handle exception
+			logMensaje = "Ocurrió un error en el Plan Cuota: " + e.getMessage();
 			logger.error(logMensaje);
 			e.printStackTrace();
 			throw new Exception(logMensaje);
@@ -54,11 +56,12 @@ public class PlanCuotaService {
 			planCuotaActualizar.setCantidadCuotas(planCuota.getCantidadCuotas());
 			planCuotaActualizar.setInteres(planCuota.getInteres());
 			planCuotaRepository.save(planCuotaActualizar);
-			logMensaje = "Modificado correctamente ID plan Cuota: " + planCuotaActualizar.getId();
+			logMensaje = "Modificado correctamente ID Plan Cuota: " + planCuotaActualizar.getId();
 			logger.info(logMensaje);
 			return planCuotaActualizar;
 		} catch (Exception e) {
-			logMensaje = "Ocurrio un error en el proceso: " + e.getMessage();
+			// TODO: handle exception
+			logMensaje = "Ocurrio un error en el Plan Cuota: " + e.getMessage();
 			logger.error(logMensaje);
 			e.printStackTrace();
 			throw new Exception(logMensaje);
@@ -73,14 +76,17 @@ public class PlanCuotaService {
 				planCuotaRepository.delete(planOptional.get());
 			}
 		} catch (Exception e) {
+			// TODO: handle exception
 			String logMensaje = e.getMessage();
 			logger.error(logMensaje);
+			e.printStackTrace();
 			throw new Exception(logMensaje);
 		}
 
 	}
 
 	public PlanCuota getPlanCuotaById(Long id) throws Exception {
+		// TODO Auto-generated method stub
 		PlanCuota planCuota = new PlanCuota();
 		try {
 			Optional<PlanCuota> planOptional = planCuotaRepository.findById(id);
@@ -89,8 +95,10 @@ public class PlanCuotaService {
 			}
 			return planCuota;
 		} catch (Exception e) {
+			// TODO: handle exception
 			String logMensaje = e.getMessage();
 			logger.error(logMensaje);
+			e.printStackTrace();
 			throw new Exception(logMensaje);
 		}
 	}

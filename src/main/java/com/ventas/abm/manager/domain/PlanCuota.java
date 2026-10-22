@@ -1,5 +1,7 @@
 package com.ventas.abm.manager.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -20,6 +22,7 @@ public class PlanCuota {
 
 	@ManyToOne
 	@JoinColumn(name = "ID_FINANCIACION")
+	@JsonIgnore
 	private Financiacion financiacion;
 
 	@Column(name = "CANTIDAD_CUOTAS")
@@ -27,6 +30,17 @@ public class PlanCuota {
 
 	@Column(name = "INTERES")
 	private Double interes;
+
+	public PlanCuota() {
+		// TODO Auto-generated constructor stub
+	}
+
+	public PlanCuota(Long id, Financiacion financiacion, Integer cantidadCuotas, Double interes) {
+		this.id = id;
+		this.financiacion = financiacion;
+		this.cantidadCuotas = cantidadCuotas;
+		this.interes = interes;
+	}
 
 	public Long getId() {
 		return id;

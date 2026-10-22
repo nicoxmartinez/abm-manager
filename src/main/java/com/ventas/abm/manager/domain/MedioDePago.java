@@ -4,6 +4,8 @@ import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,11 +31,9 @@ public class MedioDePago {
 	@Column(name = "ABREVIATURA")
 	private String abreviatura;
 
-	@Column(name = "CANTIDAD_MAX_CUOTAS")
-	private int cantidadMaximaCuotas;
-
-	@Column(name = "TIPO_TARJETA")
-	private String tipoTarjeta;
+	@Enumerated(EnumType.STRING)
+	@Column(name = "TIPO", nullable = false, length = 30)
+	private TipoMedioPago tipo;
 
 	@Column(name = "HABILITADO")
 	private Boolean habilitado;
@@ -47,6 +47,19 @@ public class MedioDePago {
 	@ManyToOne
 	@JoinColumn(name = "ID_FINANCIACION")
 	private Financiacion financiacion;
+
+	public MedioDePago() {
+		// TODO Auto-generated constructor stub
+		super();
+	}
+
+	public MedioDePago(Long idMedioPago, int codigo, String detalle, String abreviatura, TipoMedioPago tipo) {
+		this.idMedioPago = idMedioPago;
+		this.codigo = codigo;
+		this.detalle = detalle;
+		this.abreviatura = abreviatura;
+		this.tipo = tipo;
+	}
 
 	public Long getIdMedioPago() {
 		return idMedioPago;
@@ -80,20 +93,12 @@ public class MedioDePago {
 		this.abreviatura = abreviatura;
 	}
 
-	public int getCantidadMaximaCuotas() {
-		return cantidadMaximaCuotas;
+	public TipoMedioPago getTipo() {
+		return tipo;
 	}
 
-	public void setCantidadMaximaCuotas(int cantidadMaximaCuotas) {
-		this.cantidadMaximaCuotas = cantidadMaximaCuotas;
-	}
-
-	public String getTipoTarjeta() {
-		return tipoTarjeta;
-	}
-
-	public void setTipoTarjeta(String tipoTarjeta) {
-		this.tipoTarjeta = tipoTarjeta;
+	public void setTipo(TipoMedioPago tipo) {
+		this.tipo = tipo;
 	}
 
 	public Boolean getHabilitado() {

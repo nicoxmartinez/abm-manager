@@ -1,5 +1,7 @@
 package com.ventas.abm.manager.domain;
 
+import java.io.Serializable;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -9,7 +11,9 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "DOMICILIO")
-public class Domicilio {
+public class Domicilio implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,11 +41,13 @@ public class Domicilio {
 	@Column(name = "PROVINCIA")
 	private String provincia;
 
-	@Column(name = "OBSERVACIONES")
-	private String observaciones;
+	@Column(name = "PAIS")
+	private String pais;
 
-	@Column(name = "DIRECCION")
-	private String direccion;
+	public Domicilio() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
 
 	public Long getIdDomicilio() {
 		return idDomicilio;
@@ -107,20 +113,16 @@ public class Domicilio {
 		this.provincia = provincia;
 	}
 
-	public String getObservaciones() {
-		return observaciones;
+	public String getPais() {
+		return pais;
 	}
 
-	public void setObservaciones(String observaciones) {
-		this.observaciones = observaciones;
+	public void setPais(String pais) {
+		this.pais = pais;
 	}
 
-	public String getDireccion() {
-		return direccion;
-	}
-
-	public void setDireccion(String direccion) {
-		this.direccion = direccion;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }

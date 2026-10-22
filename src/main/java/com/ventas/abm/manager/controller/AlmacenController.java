@@ -48,7 +48,7 @@ public class AlmacenController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Almacen> bajaAlmacen(@PathVariable("id") long idAlmacen) {
+	public ResponseEntity<Almacen> bajaAlmacen(@PathVariable("id") Long idAlmacen) {
 		try {
 			Almacen almacen = service.deleteAlmacen(idAlmacen);
 			return ResponseEntity.ok(almacen);

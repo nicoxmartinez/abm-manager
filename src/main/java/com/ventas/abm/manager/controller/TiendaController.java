@@ -8,9 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,32 +22,10 @@ public class TiendaController {
 	@Autowired
 	TiendaService service;
 
-	@PostMapping
-	public ResponseEntity<Tienda> crearTienda(@RequestBody Tienda tienda) {
-		try {
-			Tienda nuevaTienda = service.createTienda(tienda);
-			return ResponseEntity.ok(nuevaTienda);
-		} catch (Exception e) {
-			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-		}
-	}
-
-	@PutMapping
-	public ResponseEntity<Tienda> editarMedioDePago(@RequestBody Tienda tienda) {
-		try {
-			Tienda modificarTienda = service.modifyTienda(tienda);
-			return ResponseEntity.ok(modificarTienda);
-		} catch (Exception e) {
-			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-		}
-	}
-
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Tienda> bajaTienda(@PathVariable Long id) {
+	public ResponseEntity<Tienda> bajaTienda(@PathVariable("id") Long idTienda) {
 		try {
-			Tienda tienda = service.deleteTienda(id);
+			Tienda tienda = service.deleteTienda(idTienda);
 			return ResponseEntity.ok(tienda);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -59,9 +34,9 @@ public class TiendaController {
 	}
 
 	@GetMapping("/id/{id}")
-	public ResponseEntity<Tienda> obtenerTiendaPorId(@PathVariable Long id) {
+	public ResponseEntity<Tienda> obtenerTiendaPorId(@PathVariable("id") Long idTienda) {
 		try {
-			Tienda tienda = service.getTiendaById(id);
+			Tienda tienda = service.getTiendaById(idTienda);
 			return ResponseEntity.ok(tienda);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -70,7 +45,7 @@ public class TiendaController {
 	}
 
 	@GetMapping("/codigo/{codigo}")
-	public ResponseEntity<Tienda> obtenerTiendaPorCodigo(@PathVariable String codigo) {
+	public ResponseEntity<Tienda> obtenerTiendaPorCodigo(@PathVariable("codigo") String codigo) {
 		try {
 			Tienda tienda = service.getTiendaByCodigo(codigo);
 			return ResponseEntity.ok(tienda);
@@ -81,7 +56,7 @@ public class TiendaController {
 	}
 
 	@GetMapping("/descripcion/{descripcion}")
-	public ResponseEntity<List<Tienda>> obtenerTiendaPorDescripcion(@PathVariable String descripcion) {
+	public ResponseEntity<List<Tienda>> obtenerTiendaPorDescripcion(@PathVariable("descripcion") String descripcion) {
 		try {
 			List<Tienda> tiendas = service.getTiendaByDescripcion(descripcion);
 			return ResponseEntity.ok(tiendas);

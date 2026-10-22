@@ -13,9 +13,9 @@ import com.ventas.abm.manager.domain.PuntoDeVenta;
 @Repository
 public interface PuntoDeVentaRepository extends JpaRepository<PuntoDeVenta, Long> {
 	
-	Optional<PuntoDeVenta> findByNumero(Integer numero);
+	Optional<PuntoDeVenta> findByNumeroTerminal(Integer numeroTerminal);
 	
-	@Query("SELECT p FROM PuntoDeVenta p WHERE p.nombre LIKE %:nombre%")
-    List<PuntoDeVenta> findByNombreLike(@Param("nombre") String nombre);
+	@Query("SELECT p FROM PuntoDeVenta p WHERE p.nombreTerminal LIKE %:nombre%")
+    List<PuntoDeVenta> findByNombreTerminalLike(@Param("nombreTerminal") String nombreTerminal);
 
 }

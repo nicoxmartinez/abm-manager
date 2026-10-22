@@ -48,9 +48,9 @@ public class FinanciacionController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Financiacion> bajaFinanciacion(@PathVariable Long id) {
+	public ResponseEntity<Financiacion> bajaFinanciacion(@PathVariable("id") Long idFinanciacion) {
 		try {
-			Financiacion financiacion = service.deleteFinanciacion(id);
+			Financiacion financiacion = service.deleteFinanciacion(idFinanciacion);
 			return ResponseEntity.ok(financiacion);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -70,7 +70,7 @@ public class FinanciacionController {
 	}
 
 	@GetMapping("/id/{id}")
-	public ResponseEntity<Financiacion> obtenerFinanciacionPorId(@PathVariable Long idFinanciacion) {
+	public ResponseEntity<Financiacion> obtenerFinanciacionPorId(@PathVariable("id") Long idFinanciacion) {
 		try {
 			Financiacion financiacion = service.getFinanciacionById(idFinanciacion);
 			return ResponseEntity.ok(financiacion);
@@ -81,7 +81,7 @@ public class FinanciacionController {
 	}
 
 	@GetMapping("/codigo/{codigo}")
-	public ResponseEntity<Financiacion> obtenerFinanciacionPorCodigo(@PathVariable Integer codigo) {
+	public ResponseEntity<Financiacion> obtenerFinanciacionPorCodigo(@PathVariable("codigo") Integer codigo) {
 		try {
 			Financiacion financiacion = service.getFinanciacionByCodigo(codigo);
 			return ResponseEntity.ok(financiacion);
@@ -92,7 +92,7 @@ public class FinanciacionController {
 	}
 
 	@GetMapping("/descripcion/{descripcion}")
-	public List<Financiacion> obtenerFinanciacionPorDescripcion(@PathVariable String descripcion) {
+	public List<Financiacion> obtenerFinanciacionPorDescripcion(@PathVariable("descripcion") String descripcion) {
 		try {
 			List<Financiacion> financiaciones = service.getFinanciacionByDescripcion(descripcion);
 			return financiaciones;

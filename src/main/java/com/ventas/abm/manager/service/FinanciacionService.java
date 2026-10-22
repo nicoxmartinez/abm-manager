@@ -34,13 +34,13 @@ public class FinanciacionService {
 		logger.info(logMensaje);
 		Integer codigoFinanciacion = financiacion.getCodigo();
 		if (financiacion.getIdFinanciacion() != null) {
-			logMensaje = "La creacion de financiacion no puede tener id " + financiacion.getIdFinanciacion();
+			logMensaje = "La creacion de financiacion no puede tener ID: " + financiacion.getIdFinanciacion();
 			throw new Exception(logMensaje);
 		}
 
 		Optional<Financiacion> validarCodigoFinanciacion = financiacionRepository.findByCodigo(codigoFinanciacion);
 		if (validarCodigoFinanciacion.isPresent()) {
-			logMensaje = "Financiacion encontrada" + " codigo: " + validarCodigoFinanciacion.get().getDescripcion();
+			logMensaje = "Financiacion encontrada con el Codigo: " + validarCodigoFinanciacion.get().getDescripcion();
 			logger.error(logMensaje);
 			throw new Exception(logMensaje);
 		}
@@ -52,22 +52,22 @@ public class FinanciacionService {
 		nuevaFinanciacion.setActiva(financiacion.getActiva());
 
 		nuevaFinanciacion = financiacionRepository.save(nuevaFinanciacion);
-		
+
 		List<PlanCuota> listaNuevaPlanesCuotas = new ArrayList<>();
 		if (financiacion.getPlanCuota() != null) {
 			List<PlanCuota> listaPlanesCuotas = financiacion.getPlanCuota();
 			for (PlanCuota pc : listaPlanesCuotas) {
-				PlanCuota nuevoPlanCuota = planCuotaService.createPlanCuota(pc);
 				pc.setFinanciacion(nuevaFinanciacion);
+				PlanCuota nuevoPlanCuota = planCuotaService.createPlanCuota(pc);
 				listaNuevaPlanesCuotas.add(nuevoPlanCuota);
 			}
-			nuevaFinanciacion.setPlanCuota(listaPlanesCuotas);
+			nuevaFinanciacion.setPlanCuota(listaNuevaPlanesCuotas);
 		}
-
-		logMensaje = "Creado correctamente " + "Financiacion: " + nuevaFinanciacion.getCodigo() + " "
+		financiacionRepository.save(nuevaFinanciacion);
+		logMensaje = "Creado correctamente Financiacion: " + nuevaFinanciacion.getCodigo() + " "
 				+ nuevaFinanciacion.getDescripcion();
 		logger.info(logMensaje);
-
+		
 		return nuevaFinanciacion;
 	}
 
@@ -86,34 +86,34 @@ public class FinanciacionService {
 
 			List<PlanCuota> listaPlanescuotaActualizada = new ArrayList<>();
 			if (financiacion.getPlanCuota() != null && !financiacion.getPlanCuota().isEmpty()) {
-				List<PlanCuota> planesExist = financiacion.getPlanCuota().stream().filter(p -> p.getId() != null)
+				List<PlanCuota> planesExistentes = financiacion.getPlanCuota().stream().filter(p -> p.getId() != null)
 						.collect(Collectors.toList());
-				List<PlanCuota> planesNew = financiacion.getPlanCuota().stream().filter(p -> p.getId() == null)
+				List<PlanCuota> planesCuotasNuevos = financiacion.getPlanCuota().stream().filter(p -> p.getId() == null)
 						.collect(Collectors.toList());
 
-				if (planesExist != null && !planesExist.isEmpty()) {
-					for (PlanCuota pc : planesExist) {
-						PlanCuota pcDb = planCuotaService.updatePlanCuota(pc);
-						if (pcDb == null) {
-							logger.error("No se encontró el PlanCuota con id " + pc.getId());
+				if (planesExistentes != null && !planesExistentes.isEmpty()) {
+					for (PlanCuota pc : planesExistentes) {
+						PlanCuota pcExistenteModificado = planCuotaService.updatePlanCuota(pc);
+						if (pcExistenteModificado == null) {
+							logger.error("No se encontró el PlanCuota con ID: " + pc.getId());
 							throw new Exception(logMensaje);
 						}
-						listaPlanescuotaActualizada.add(pcDb);
+						listaPlanescuotaActualizada.add(pcExistenteModificado);
 					}
 				} else {
 					for (PlanCuota pc : financiacionDb.get().getPlanCuota()) {
 						planCuotaService.deletePlanCuota(pc.getId());
 					}
 				}
-				if (planesNew != null && !planesNew.isEmpty()) {
-					for (PlanCuota pc : planesNew) {
+				if (planesCuotasNuevos != null && !planesCuotasNuevos.isEmpty()) {
+					for (PlanCuota pc : planesCuotasNuevos) {
 						pc.setFinanciacion(financiacion);
-						PlanCuota pcDb = planCuotaService.createPlanCuota(pc);
-						if (pcDb == null) {
-							logger.error("No se encontró el PlanCuota con id " + pc.getId());
+						PlanCuota pcNuevo = planCuotaService.createPlanCuota(pc);
+						if (pcNuevo == null) {
+							logger.error("No se encontró el PlanCuota con ID: " + pc.getId());
 							throw new Exception(logMensaje);
 						}
-						listaPlanescuotaActualizada.add(pcDb);
+						listaPlanescuotaActualizada.add(pcNuevo);
 					}
 				}
 				financiacionActualizar.getPlanCuota().clear();
@@ -121,21 +121,37 @@ public class FinanciacionService {
 			}
 
 			financiacionActualizar = financiacionRepository.save(financiacionActualizar);
-			logMensaje = "Modificado correctamente " + "Financiacion: " + financiacionActualizar.getCodigo() + " "
+			logMensaje = "Modificado correctamente Financiacion: " + financiacionActualizar.getCodigo() + " "
 					+ financiacionActualizar.getDescripcion();
 			logger.info(logMensaje);
 
 			return financiacionActualizar;
 		} else {
-			logMensaje = "Financiacion no encontrada" + " id: " + financiacion.getIdFinanciacion();
+			logMensaje = "Financiacion no encontrada ID: " + financiacion.getIdFinanciacion();
 			logger.error(logMensaje);
 			throw new Exception(logMensaje);
 		}
 	}
 
-	public Financiacion deleteFinanciacion(Long id) {
+	public Financiacion deleteFinanciacion(Long idFinanciacion) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		String logMensaje = "Realizando baja de Financiación ID: " + idFinanciacion;
+		logger.info(logMensaje);
+		Optional<Financiacion> financiacion = financiacionRepository.findById(idFinanciacion);
+		if (financiacion.isPresent()) {
+			Financiacion bajaDeFinanciacion = financiacion.get();
+			bajaDeFinanciacion.setActiva(false);
+			financiacionRepository.save(bajaDeFinanciacion);
+			logMensaje = "Se dio de baja correctamente Almacén: " + bajaDeFinanciacion.getCodigo() + " "
+					+ bajaDeFinanciacion.getDescripcion();
+			logger.info(logMensaje);
+			return bajaDeFinanciacion;
+		} else {
+			logMensaje = "No existe un Financiación con ID: " + idFinanciacion;
+			logger.error(logMensaje);
+			throw new Exception(logMensaje);
+		}
+
 	}
 
 	public List<Financiacion> getAllFinanciacionActiva() throws Exception {
@@ -157,7 +173,7 @@ public class FinanciacionService {
 			Financiacion financiacion = financiacionOptional.get();
 			return financiacion;
 		} else {
-			String logMensaje = "Financiacion no encontrada" + " id: " + idFinanciacion;
+			String logMensaje = "Financiacion no encontrada ID: " + idFinanciacion;
 			logger.error(logMensaje);
 			return null;
 		}

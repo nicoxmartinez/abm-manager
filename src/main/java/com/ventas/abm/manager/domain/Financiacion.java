@@ -32,6 +32,20 @@ public class Financiacion {
 	@OrderColumn(name = "CANTIDAD_CUOTAS")
 	private List<PlanCuota> planCuota;
 
+	public Financiacion() {
+		// TODO Auto-generated constructor stub
+		super();
+	}
+
+	public Financiacion(Long idFinanciacion, Integer codigo, String descripcion, Boolean activa,
+			List<PlanCuota> planCuota) {
+		this.idFinanciacion = idFinanciacion;
+		this.codigo = codigo;
+		this.descripcion = descripcion;
+		this.activa = activa;
+		this.planCuota = planCuota;
+	}
+
 	public Long getIdFinanciacion() {
 		return idFinanciacion;
 	}

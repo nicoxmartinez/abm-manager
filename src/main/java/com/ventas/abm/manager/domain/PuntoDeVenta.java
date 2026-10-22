@@ -5,57 +5,61 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "PUNTO_DE_VENTA")
 public class PuntoDeVenta {
 
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ID_PUNTO_DE_VENTA")
-	private Long id;
+	@Column(name = "ID_PUNTO_VENTA")
+	private Long idPuntoDeVenta;
 
-	@Column(name = "NUMERO")
-	private Integer numero;
+	@Column(name = "NUMERO_TERMINAL")
+	private Integer numeroTerminal;
 
-	@Column(name = "NOMBRE")
-	private String nombre;
+	@Column(name = "NOMBRE_TERMINAL")
+	private String nombreTerminal;
 
-	@Column(name = "NUM_CAJA")
+	@Column(name = "NUMERO_CAJA")
 	private Short numeroDeCaja;
 
-	@Column(name = "USUARIO")
-	private String usuario;
-
-	@ManyToOne
-	@JoinColumn(name = "ID_TIENDA")
-	private Tienda tienda;
-
-	public Long getId() {
-		return id;
+	public PuntoDeVenta() {
+		// TODO Auto-generated constructor stub
+		super();
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public PuntoDeVenta(Integer numeroTerminal, String nombreTerminal, Short numeroDeCaja) {
+		this.numeroTerminal = numeroTerminal;
+		this.nombreTerminal = nombreTerminal;
+		this.numeroDeCaja = numeroDeCaja;
 	}
 
-	public Integer getNumero() {
-		return numero;
+	public Long getIdPuntoDeVenta() {
+		return idPuntoDeVenta;
 	}
 
-	public void setNumero(Integer numero) {
-		this.numero = numero;
+	public void setIdPuntoDeVenta(Long idPuntoDeVenta) {
+		this.idPuntoDeVenta = idPuntoDeVenta;
 	}
 
-	public String getNombre() {
-		return nombre;
+	public Integer getNumeroTerminal() {
+		return numeroTerminal;
 	}
 
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
+	public void setNumeroTerminal(Integer numeroTerminal) {
+		this.numeroTerminal = numeroTerminal;
+	}
+
+	public String getNombreTerminal() {
+		return nombreTerminal;
+	}
+
+	public void setNombreTerminal(String nombreTerminal) {
+		this.nombreTerminal = nombreTerminal;
 	}
 
 	public Short getNumeroDeCaja() {
@@ -66,20 +70,8 @@ public class PuntoDeVenta {
 		this.numeroDeCaja = numeroDeCaja;
 	}
 
-	public String getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(String usuario) {
-		this.usuario = usuario;
-	}
-
-	public Tienda getTienda() {
-		return tienda;
-	}
-
-	public void setTienda(Tienda tienda) {
-		this.tienda = tienda;
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 
 }
