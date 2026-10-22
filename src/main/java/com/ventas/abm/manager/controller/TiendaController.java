@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ventas.abm.manager.domain.Tienda;
+import com.ventas.abm.manager.models.TiendaDto;
 import com.ventas.abm.manager.service.TiendaService;
 
 @RestController
@@ -45,9 +46,9 @@ public class TiendaController {
 	}
 
 	@GetMapping("/codigo/{codigo}")
-	public ResponseEntity<Tienda> obtenerTiendaPorCodigo(@PathVariable("codigo") String codigo) {
+	public ResponseEntity<TiendaDto> obtenerTiendaPorCodigo(@PathVariable("codigo") String codigo) {
 		try {
-			Tienda tienda = service.getTiendaByCodigo(codigo);
+			TiendaDto tienda = service.getTiendaByCodigo(codigo);
 			return ResponseEntity.ok(tienda);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -56,9 +57,10 @@ public class TiendaController {
 	}
 
 	@GetMapping("/descripcion/{descripcion}")
-	public ResponseEntity<List<Tienda>> obtenerTiendaPorDescripcion(@PathVariable("descripcion") String descripcion) {
+	public ResponseEntity<List<TiendaDto>> obtenerTiendaPorDescripcion(
+			@PathVariable("descripcion") String descripcion) {
 		try {
-			List<Tienda> tiendas = service.getTiendaByDescripcion(descripcion);
+			List<TiendaDto> tiendas = service.getTiendaByDescripcion(descripcion);
 			return ResponseEntity.ok(tiendas);
 		} catch (Exception e) {
 			// TODO: handle exception

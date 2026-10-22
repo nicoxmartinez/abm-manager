@@ -120,38 +120,26 @@ public class VendedorService {
 
 	public List<VendedorDto> getVendedorByNombre(String nombre) throws Exception {
 		// TODO Auto-generated method stub
-		List<Vendedor> vendedor = vendedorRepository.findByNombre(nombre);
-		if (vendedor.isEmpty()) {
+		List<Vendedor> listaVendedores = vendedorRepository.findByNombre(nombre);
+		if (listaVendedores.isEmpty()) {
 			logger.error("No se encontro registros con el nombre: " + nombre);
 			throw new Exception("No se encontro registros con el nombre: " + nombre);
 		}
-		List<VendedorDto> listaDto = mapDtoList(vendedor);
+		List<VendedorDto> listaDto = mapearListaDto(listaVendedores);
 
 		return listaDto;
 	}
 
 	public List<VendedorDto> getVendedorByApellido(String apellido) throws Exception {
 		// TODO Auto-generated method stub
-		List<Vendedor> vendedor = vendedorRepository.findByApellido(apellido);
-		if (vendedor.isEmpty()) {
+		List<Vendedor> listaVendedores = vendedorRepository.findByApellido(apellido);
+		if (listaVendedores.isEmpty()) {
 			logger.error("No se encontro registros con el apellido: " + apellido);
 			throw new Exception("No se encontro registros con el apellido: " + apellido);
 		}
-		List<VendedorDto> listaDto = mapDtoList(vendedor);
+		List<VendedorDto> listaDto = mapearListaDto(listaVendedores);
 
 		return listaDto;
-	}
-
-	private List<VendedorDto> mapDtoList(List<Vendedor> vendedores) {
-		// TODO Auto-generated method stub
-		List<VendedorDto> dto = new ArrayList<>();
-
-		for (Vendedor vendedor : vendedores) {
-			VendedorDto vendedorDto = mapearDto(vendedor);
-			dto.add(vendedorDto);
-		}
-
-		return dto;
 	}
 
 	public VendedorDto getVendedorByCodigo(Integer codigo) throws Exception {
@@ -165,6 +153,18 @@ public class VendedorService {
 			logger.error(logMensaje);
 			throw new Exception(logMensaje);
 		}
+	}
+
+	private List<VendedorDto> mapearListaDto(List<Vendedor> listaVendedores) {
+		// TODO Auto-generated method stub
+		List<VendedorDto> listaDto = new ArrayList<>();
+
+		for (Vendedor vendedor : listaVendedores) {
+			VendedorDto vendedorDto = mapearDto(vendedor);
+			listaDto.add(vendedorDto);
+		}
+
+		return listaDto;
 	}
 
 	private VendedorDto mapearDto(Vendedor vendedor) {

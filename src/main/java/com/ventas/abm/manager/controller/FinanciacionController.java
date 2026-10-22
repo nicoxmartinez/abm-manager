@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ventas.abm.manager.domain.Financiacion;
+import com.ventas.abm.manager.models.FinanciacionDto;
 import com.ventas.abm.manager.service.FinanciacionService;
 
 @RestController
@@ -59,9 +60,9 @@ public class FinanciacionController {
 	}
 
 	@GetMapping("/lista/activas")
-	public ResponseEntity<List<Financiacion>> obtenerListaDeFinanciacionActivas() {
+	public ResponseEntity<List<FinanciacionDto>> obtenerListaDeFinanciacionActivas() {
 		try {
-			List<Financiacion> financiaciones = service.getAllFinanciacionActiva();
+			List<FinanciacionDto> financiaciones = service.getAllFinanciacionActiva();
 			return ResponseEntity.ok(financiaciones);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -81,9 +82,9 @@ public class FinanciacionController {
 	}
 
 	@GetMapping("/codigo/{codigo}")
-	public ResponseEntity<Financiacion> obtenerFinanciacionPorCodigo(@PathVariable("codigo") Integer codigo) {
+	public ResponseEntity<FinanciacionDto> obtenerFinanciacionPorCodigo(@PathVariable("codigo") Integer codigo) {
 		try {
-			Financiacion financiacion = service.getFinanciacionByCodigo(codigo);
+			FinanciacionDto financiacion = service.getFinanciacionByCodigo(codigo);
 			return ResponseEntity.ok(financiacion);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -92,9 +93,9 @@ public class FinanciacionController {
 	}
 
 	@GetMapping("/descripcion/{descripcion}")
-	public List<Financiacion> obtenerFinanciacionPorDescripcion(@PathVariable("descripcion") String descripcion) {
+	public List<FinanciacionDto> obtenerFinanciacionPorDescripcion(@PathVariable("descripcion") String descripcion) {
 		try {
-			List<Financiacion> financiaciones = service.getFinanciacionByDescripcion(descripcion);
+			List<FinanciacionDto> financiaciones = service.getFinanciacionByDescripcion(descripcion);
 			return financiaciones;
 		} catch (Exception e) {
 			// TODO: handle exception

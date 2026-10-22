@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.ventas.abm.manager.domain.Financiacion;
 import com.ventas.abm.manager.domain.MedioDePago;
 import com.ventas.abm.manager.domain.TipoMedioPago;
+import com.ventas.abm.manager.mapper.MedioDePagoMapper;
+import com.ventas.abm.manager.models.MedioDePagoDto;
 import com.ventas.abm.manager.repository.MedioDePagoRepository;
 
 @Service
@@ -22,6 +24,9 @@ public class MedioDePagoService {
 
 	@Autowired
 	FinanciacionService financiacionService;
+
+	@Autowired
+	MedioDePagoMapper medioDePagoMapper;
 
 	private static final Log logger = LogFactory.getLog(MedioDePagoService.class);
 
@@ -121,16 +126,16 @@ public class MedioDePagoService {
 		}
 	}
 
-	public List<MedioDePago> getAllMedioDePagoHabilitados() throws Exception {
+	public List<MedioDePagoDto> getAllMedioDePagoHabilitados() throws Exception {
 		// TODO Auto-generated method stub
 		List<MedioDePago> listaMediosDePago = medioDePagoRepository.findAllMedioPagoHabilitados();
 		if (listaMediosDePago.isEmpty()) {
 			String logMensaje = "No se pudo obtener la lista de Medios de Pago";
 			logger.error(logMensaje);
 			throw new Exception(logMensaje);
-		} else {
-			return listaMediosDePago;
 		}
+		List<MedioDePagoDto> listaDto = medioDePagoMapper.mapearListaMedioDePagoDto(listaMediosDePago);
+		return listaDto;
 	}
 
 	public MedioDePago getMedioDePagoById(Long idMedioPago) throws Exception {
@@ -146,12 +151,12 @@ public class MedioDePagoService {
 		}
 	}
 
-	public MedioDePago getMedioDePagoByCodigo(Integer codigo) throws Exception {
+	public MedioDePagoDto getMedioDePagoByCodigo(Integer codigo) throws Exception {
 		// TODO Auto-generated method stub
 		Optional<MedioDePago> medioDePagoOptional = medioDePagoRepository.findByCodigo(codigo);
 		if (medioDePagoOptional.isPresent()) {
-			MedioDePago medioDePago = medioDePagoOptional.get();
-			return medioDePago;
+			MedioDePagoDto dto = medioDePagoMapper.mapearMedioDePagoDto(medioDePagoOptional.get());
+			return dto;
 		} else {
 			String logMensaje = "No se encontró Medio de Pago: " + codigo;
 			logger.error(logMensaje);
@@ -159,15 +164,16 @@ public class MedioDePagoService {
 		}
 	}
 
-	public List<MedioDePago> getMedioDePagoByDetalle(String detalle) throws Exception {
+	public List<MedioDePagoDto> getMedioDePagoByDetalle(String detalle) throws Exception {
 		// TODO Auto-generated method stub
 		List<MedioDePago> listaMedioDePago = medioDePagoRepository.findByDetalleLikeAndFechaBajaIsNull(detalle);
-		if (listaMedioDePago.isEmpty()) {
+		if (!listaMedioDePago.isEmpty()) {
+			List<MedioDePagoDto> listaDto = medioDePagoMapper.mapearListaMedioDePagoDto(listaMedioDePago);
+			return listaDto;
+		} else {
 			String logMensaje = "No se encontró Medio de Pago: " + detalle;
 			logger.error(logMensaje);
 			throw new Exception(logMensaje);
-		} else {
-			return listaMedioDePago;
 		}
 	}
 

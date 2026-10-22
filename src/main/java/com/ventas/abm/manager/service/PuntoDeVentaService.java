@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ventas.abm.manager.domain.PuntoDeVenta;
+import com.ventas.abm.manager.mapper.PuntoDeVentaMapper;
+import com.ventas.abm.manager.models.PuntoDeVentaDto;
 import com.ventas.abm.manager.repository.PuntoDeVentaRepository;
 
 @Service
@@ -18,7 +20,7 @@ public class PuntoDeVentaService {
 	PuntoDeVentaRepository puntoDeVentaRepository;
 
 	@Autowired
-	TiendaService tiendaService;
+	PuntoDeVentaMapper puntoDeVentaMapper;
 
 	private static final Log logger = LogFactory.getLog(PuntoDeVentaService.class);
 
@@ -91,12 +93,12 @@ public class PuntoDeVentaService {
 		}
 	}
 
-	public PuntoDeVenta getPuntoDeVentaByNumeroTerminal(Integer numeroTerminal) throws Exception {
+	public PuntoDeVentaDto getPuntoDeVentaByNumeroTerminal(Integer numeroTerminal) throws Exception {
 		// TODO Auto-generated method stub
 		Optional<PuntoDeVenta> puntoDeVentaOptional = puntoDeVentaRepository.findByNumeroTerminal(numeroTerminal);
 		if (puntoDeVentaOptional.isPresent()) {
-			PuntoDeVenta puntoDeVenta = puntoDeVentaOptional.get();
-			return puntoDeVenta;
+			PuntoDeVentaDto dto = puntoDeVentaMapper.mapearPuntoDeVentaDto(puntoDeVentaOptional.get());
+			return dto;
 		} else {
 			String logMensaje = "No se encontró Punto de Venta con el Número de terminal: " + numeroTerminal;
 			logger.error(logMensaje);
@@ -104,11 +106,12 @@ public class PuntoDeVentaService {
 		}
 	}
 
-	public List<PuntoDeVenta> getPuntoDeVentaByNombreTerminal(String nombreTerminal) throws Exception {
+	public List<PuntoDeVentaDto> getPuntoDeVentaByNombreTerminal(String nombreTerminal) throws Exception {
 		// TODO Auto-generated method stub
 		List<PuntoDeVenta> listaPuntosDeVenta = puntoDeVentaRepository.findByNombreTerminalLike(nombreTerminal);
 		if (!listaPuntosDeVenta.isEmpty()) {
-			return listaPuntosDeVenta;
+			List<PuntoDeVentaDto> listaDto = puntoDeVentaMapper.mapearListaPuntoDeVentaDto(listaPuntosDeVenta);
+			return listaDto;
 		} else {
 			String logMensaje = "No se encontraron Punto de Venta con el nombre de terminal: " + nombreTerminal;
 			logger.error(logMensaje);

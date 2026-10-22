@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ventas.abm.manager.domain.Tienda;
+import com.ventas.abm.manager.mapper.TiendaMapper;
+import com.ventas.abm.manager.models.TiendaDto;
 import com.ventas.abm.manager.repository.TiendaRepository;
 
 @Service
@@ -17,6 +19,9 @@ public class TiendaService {
 
 	@Autowired
 	TiendaRepository tiendaRepository;
+
+	@Autowired
+	TiendaMapper tiendaMapper;
 
 	private static final Log logger = LogFactory.getLog(TiendaService.class);
 
@@ -53,11 +58,11 @@ public class TiendaService {
 		}
 	}
 
-	public Tienda getTiendaByCodigo(String codigo) throws Exception {
+	public TiendaDto getTiendaByCodigo(String codigo) throws Exception {
 		// TODO Auto-generated method stub
 		Optional<Tienda> tiendaOptional = tiendaRepository.findByCodigo(codigo);
 		if (tiendaOptional.isPresent()) {
-			Tienda tienda = tiendaOptional.get();
+			TiendaDto tienda = tiendaMapper.mapearTiendaDto(tiendaOptional.get());
 			return tienda;
 		} else {
 			String logMensaje = "No se encontró Tienda con el código: " + codigo;
@@ -66,11 +71,12 @@ public class TiendaService {
 		}
 	}
 
-	public List<Tienda> getTiendaByDescripcion(String descripcion) throws Exception {
+	public List<TiendaDto> getTiendaByDescripcion(String descripcion) throws Exception {
 		// TODO Auto-generated method stub
-		List<Tienda> listaTienda = tiendaRepository.findByDescripcionLike(descripcion);
-		if (!listaTienda.isEmpty()) {
-			return listaTienda;
+		List<Tienda> listaTiendas = tiendaRepository.findByDescripcionLike(descripcion);
+		if (!listaTiendas.isEmpty()) {
+			List<TiendaDto> listaDto = tiendaMapper.mapearListaTiendaDto(listaTiendas);
+			return listaDto;
 		} else {
 			String logMensaje = "No se encontraron Tiendas con la descripción: " + descripcion;
 			logger.error(logMensaje);

@@ -12,6 +12,8 @@ import org.springframework.stereotype.Service;
 import com.ventas.abm.manager.domain.Almacen;
 import com.ventas.abm.manager.domain.Domicilio;
 import com.ventas.abm.manager.domain.Tienda;
+import com.ventas.abm.manager.mapper.AlmacenMapper;
+import com.ventas.abm.manager.models.AlmacenDto;
 import com.ventas.abm.manager.repository.AlmacenRepository;
 import com.ventas.abm.manager.repository.TiendaRepository;
 
@@ -28,6 +30,9 @@ public class AlmacenService {
 
 	@Autowired
 	DomicilioService domicilioService;
+
+	@Autowired
+	AlmacenMapper almacenMapper;
 
 	private static final Log logger = LogFactory.getLog(AlmacenService.class);
 
@@ -158,12 +163,12 @@ public class AlmacenService {
 		}
 	}
 
-	public Almacen getAlmacenByCodigo(String codigo) throws Exception {
+	public AlmacenDto getAlmacenByCodigo(String codigo) throws Exception {
 		// TODO Auto-generated method stub
 		Optional<Almacen> almacenOptional = almacenRepository.findByCodigo(codigo);
 		if (almacenOptional.isPresent()) {
-			Almacen almacen = almacenOptional.get();
-			return almacen;
+			AlmacenDto dto = almacenMapper.mapearAlmacenDto(almacenOptional.get());
+			return dto;
 		} else {
 			String logMensaje = "No se encontró Almacén con el código: " + codigo;
 			logger.error(logMensaje);
@@ -171,11 +176,12 @@ public class AlmacenService {
 		}
 	}
 
-	public List<Almacen> getAlmacenByDescripcion(String descripcion) throws Exception {
+	public List<AlmacenDto> getAlmacenByDescripcion(String descripcion) throws Exception {
 		// TODO Auto-generated method stub
-		List<Almacen> listaAlmacen = almacenRepository.findByDescripcionLike(descripcion);
-		if (!listaAlmacen.isEmpty()) {
-			return listaAlmacen;
+		List<Almacen> listaAlmacenes = almacenRepository.findByDescripcionLike(descripcion);
+		if (!listaAlmacenes.isEmpty()) {
+			List<AlmacenDto> listaDto = almacenMapper.mapearListaAlmacenDto(listaAlmacenes);
+			return listaDto;
 		} else {
 			String logMensaje = "No se encontraron almacenes con la descripción: " + descripcion;
 			logger.error(logMensaje);

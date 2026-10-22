@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ventas.abm.manager.domain.PuntoDeVenta;
+import com.ventas.abm.manager.models.PuntoDeVentaDto;
 import com.ventas.abm.manager.service.PuntoDeVentaService;
 
 @RestController
@@ -58,10 +59,10 @@ public class PuntoDeVentaController {
 	}
 
 	@GetMapping("/numero/{numeroTerminal}")
-	public ResponseEntity<PuntoDeVenta> obtenerPuntoDeVentaPorNumero(
+	public ResponseEntity<PuntoDeVentaDto> obtenerPuntoDeVentaPorNumero(
 			@PathVariable("numeroTerminal") Integer numeroTerminal) {
 		try {
-			PuntoDeVenta puntoDeVenta = service.getPuntoDeVentaByNumeroTerminal(numeroTerminal);
+			PuntoDeVentaDto puntoDeVenta = service.getPuntoDeVentaByNumeroTerminal(numeroTerminal);
 			return ResponseEntity.ok(puntoDeVenta);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -70,10 +71,10 @@ public class PuntoDeVentaController {
 	}
 
 	@GetMapping("/nombre/{nombreTerminal}")
-	public ResponseEntity<List<PuntoDeVenta>> obtenerPuntoDeVentaPorNombre(
+	public ResponseEntity<List<PuntoDeVentaDto>> obtenerPuntoDeVentaPorNombre(
 			@PathVariable("nombreTerminal") String nombreTerminal) {
 		try {
-			List<PuntoDeVenta> puntosDeVenta = service.getPuntoDeVentaByNombreTerminal(nombreTerminal);
+			List<PuntoDeVentaDto> puntosDeVenta = service.getPuntoDeVentaByNombreTerminal(nombreTerminal);
 			return ResponseEntity.ok(puntosDeVenta);
 		} catch (Exception e) {
 			// TODO: handle exception

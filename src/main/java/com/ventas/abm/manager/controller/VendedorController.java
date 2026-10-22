@@ -74,8 +74,8 @@ public class VendedorController {
 	@GetMapping("/nombre/{nombre}")
 	private ResponseEntity<List<VendedorDto>> obtenerVendedorPorNombre(@PathVariable String nombre) throws Exception {
 		try {
-			List<VendedorDto> listaDto = service.getVendedorByNombre(nombre);
-			return ResponseEntity.ok(listaDto);
+			List<VendedorDto> vendedores = service.getVendedorByNombre(nombre);
+			return ResponseEntity.ok(vendedores);
 		} catch (NotFoundException e) {
 			// TODO: handle exception
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -86,8 +86,8 @@ public class VendedorController {
 	private ResponseEntity<List<VendedorDto>> obtenerVendedoPorApellido(@PathVariable String apellido)
 			throws Exception {
 		try {
-			List<VendedorDto> listaDto = service.getVendedorByApellido(apellido);
-			return ResponseEntity.ok(listaDto);
+			List<VendedorDto> vendedores = service.getVendedorByApellido(apellido);
+			return ResponseEntity.ok(vendedores);
 		} catch (NotFoundException e) {
 			// TODO: handle exception
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -97,8 +97,8 @@ public class VendedorController {
 	@GetMapping("/codigo/{codigo}")
 	private ResponseEntity<VendedorDto> obtenerPorCodigo(@PathVariable Integer codigo) throws Exception {
 		try {
-			VendedorDto dto = service.getVendedorByCodigo(codigo);
-			return ResponseEntity.ok(dto);
+			VendedorDto vendedor = service.getVendedorByCodigo(codigo);
+			return ResponseEntity.ok(vendedor);
 		} catch (NotFoundException e) {
 			// TODO: handle exception
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());

@@ -11,8 +11,6 @@ import jakarta.persistence.Table;
 @Table(name = "PUNTO_DE_VENTA")
 public class PuntoDeVenta {
 
-	private static final long serialVersionUID = 1L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ID_PUNTO_VENTA")
@@ -68,10 +66,6 @@ public class PuntoDeVenta {
 
 	public void setNumeroDeCaja(Short numeroDeCaja) {
 		this.numeroDeCaja = numeroDeCaja;
-	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
 	}
 
 }

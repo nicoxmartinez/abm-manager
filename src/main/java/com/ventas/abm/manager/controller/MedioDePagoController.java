@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ventas.abm.manager.domain.MedioDePago;
+import com.ventas.abm.manager.models.MedioDePagoDto;
 import com.ventas.abm.manager.service.MedioDePagoService;
 
 @RestController
@@ -59,9 +60,9 @@ public class MedioDePagoController {
 	}
 
 	@GetMapping("/lista/habilitados")
-	public ResponseEntity<List<MedioDePago>> obtenerListaMedioDePagoHabilitados() {
+	public ResponseEntity<List<MedioDePagoDto>> obtenerListaMedioDePagoHabilitados() {
 		try {
-			List<MedioDePago> mediosDePago = service.getAllMedioDePagoHabilitados();
+			List<MedioDePagoDto> mediosDePago = service.getAllMedioDePagoHabilitados();
 			return ResponseEntity.ok(mediosDePago);
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
@@ -80,9 +81,9 @@ public class MedioDePagoController {
 	}
 
 	@GetMapping("/codigo/{codigo}")
-	public ResponseEntity<MedioDePago> obtenerMedioDePagoPorCodigo(@PathVariable("codigo") Integer codigo) {
+	public ResponseEntity<MedioDePagoDto> obtenerMedioDePagoPorCodigo(@PathVariable("codigo") Integer codigo) {
 		try {
-			MedioDePago medioDePago = service.getMedioDePagoByCodigo(codigo);
+			MedioDePagoDto medioDePago = service.getMedioDePagoByCodigo(codigo);
 			return ResponseEntity.ok(medioDePago);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -91,9 +92,9 @@ public class MedioDePagoController {
 	}
 
 	@GetMapping("/detalle/{detalle}")
-	public ResponseEntity<List<MedioDePago>> obtenerMedioDePagoPorDetalle(@PathVariable("detalle") String detalle) {
+	public ResponseEntity<List<MedioDePagoDto>> obtenerMedioDePagoPorDetalle(@PathVariable("detalle") String detalle) {
 		try {
-			List<MedioDePago> mediosDePago = service.getMedioDePagoByDetalle(detalle);
+			List<MedioDePagoDto> mediosDePago = service.getMedioDePagoByDetalle(detalle);
 			return ResponseEntity.ok(mediosDePago);
 		} catch (Exception e) {
 			// TODO: handle exception

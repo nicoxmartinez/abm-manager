@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.ventas.abm.manager.domain.Financiacion;
 import com.ventas.abm.manager.domain.PlanCuota;
+import com.ventas.abm.manager.mapper.FinanciacionMapper;
+import com.ventas.abm.manager.models.FinanciacionDto;
 import com.ventas.abm.manager.repository.FinanciacionRepository;
 
 @Service
@@ -23,6 +25,9 @@ public class FinanciacionService {
 
 	@Autowired
 	PlanCuotaService planCuotaService;
+
+	@Autowired
+	FinanciacionMapper financiacionMapper;
 
 	private static final Log logger = LogFactory.getLog(FinanciacionService.class);
 
@@ -67,7 +72,7 @@ public class FinanciacionService {
 		logMensaje = "Creado correctamente Financiacion: " + nuevaFinanciacion.getCodigo() + " "
 				+ nuevaFinanciacion.getDescripcion();
 		logger.info(logMensaje);
-		
+
 		return nuevaFinanciacion;
 	}
 
@@ -154,7 +159,7 @@ public class FinanciacionService {
 
 	}
 
-	public List<Financiacion> getAllFinanciacionActiva() throws Exception {
+	public List<FinanciacionDto> getAllFinanciacionActiva() throws Exception {
 		// TODO Auto-generated method stub
 		List<Financiacion> listaFinanciacion = financiacionRepository.findAllFinanciacionActiva();
 		if (listaFinanciacion.isEmpty()) {
@@ -162,8 +167,8 @@ public class FinanciacionService {
 			logger.error(logMensaje);
 			throw new Exception(logMensaje);
 		}
-
-		return listaFinanciacion;
+		List<FinanciacionDto> listaDto = financiacionMapper.mapearListaFinanciacionDto(listaFinanciacion);
+		return listaDto;
 	}
 
 	public Financiacion getFinanciacionById(Long idFinanciacion) {
@@ -179,12 +184,12 @@ public class FinanciacionService {
 		}
 	}
 
-	public Financiacion getFinanciacionByCodigo(Integer codigo) throws Exception {
+	public FinanciacionDto getFinanciacionByCodigo(Integer codigo) throws Exception {
 		// TODO Auto-generated method stub
 		Optional<Financiacion> financiacionOptional = financiacionRepository.findByCodigo(codigo);
 		if (financiacionOptional.isPresent()) {
-			Financiacion financiacion = financiacionOptional.get();
-			return financiacion;
+			FinanciacionDto dto = financiacionMapper.mapearFinanciacionDto(financiacionOptional.get());
+			return dto;
 		} else {
 			String logMensaje = "No se encontró Financiación: " + codigo;
 			logger.error(logMensaje);
@@ -192,15 +197,18 @@ public class FinanciacionService {
 		}
 	}
 
-	public List<Financiacion> getFinanciacionByDescripcion(String descripcion) throws Exception {
+	public List<FinanciacionDto> getFinanciacionByDescripcion(String descripcion) throws Exception {
 		// TODO Auto-generated method stub
 		List<Financiacion> financiaciones = financiacionRepository.findByDescripcion(descripcion);
-		if (financiaciones.isEmpty()) {
-			logger.error("No se encontró Financiación: " + descripcion);
-			throw new Exception("No se encontró Financiación: " + descripcion);
+		if (!financiaciones.isEmpty()) {
+			List<FinanciacionDto> listaDto = financiacionMapper.mapearListaFinanciacionDto(financiaciones);
+			return listaDto;
+		} else {
+			String logMensaje = "No se encontró Financiación: " + descripcion;
+			logger.error(logMensaje);
+			throw new Exception(logMensaje);
 		}
 
-		return financiaciones;
 	}
 
 }
