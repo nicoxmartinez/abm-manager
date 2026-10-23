@@ -20,14 +20,13 @@ public class PlanCuotaService {
 
 	public PlanCuota createPlanCuota(PlanCuota planCuota) throws Exception {
 		// TODO Auto-generated method stub
-		String logMensaje = "Creando registro de Plan cuota";
+		String logMensaje = "Creando registro de Plan cuota " + planCuota.getCantidadCuotas();
 		logger.info(logMensaje);
 		PlanCuota planCuotaNuevo = new PlanCuota();
 		try {
 			planCuotaNuevo.setCantidadCuotas(planCuota.getCantidadCuotas());
 			planCuotaNuevo.setInteres(planCuota.getInteres());
 			planCuotaNuevo.setFinanciacion(planCuota.getFinanciacion());
-			
 			planCuotaRepository.save(planCuotaNuevo);
 			logMensaje = "Registrada correctamente ID: " + planCuotaNuevo.getId();
 			logger.info(logMensaje);
@@ -51,14 +50,14 @@ public class PlanCuotaService {
 			logger.info(logMensaje);
 			throw new Exception(logMensaje);
 		}
-		PlanCuota planCuotaActualizar = optional.get();
+		PlanCuota planCuotaEnBd = optional.get();
 		try {
-			planCuotaActualizar.setCantidadCuotas(planCuota.getCantidadCuotas());
-			planCuotaActualizar.setInteres(planCuota.getInteres());
-			planCuotaRepository.save(planCuotaActualizar);
-			logMensaje = "Modificado correctamente ID Plan Cuota: " + planCuotaActualizar.getId();
+			planCuotaEnBd.setCantidadCuotas(planCuota.getCantidadCuotas());
+			planCuotaEnBd.setInteres(planCuota.getInteres());
+			planCuotaRepository.save(planCuotaEnBd);
+			logMensaje = "Modificado correctamente ID Plan Cuota: " + planCuotaEnBd.getId();
 			logger.info(logMensaje);
-			return planCuotaActualizar;
+			return planCuotaEnBd;
 		} catch (Exception e) {
 			// TODO: handle exception
 			logMensaje = "Ocurrio un error en el Plan Cuota: " + e.getMessage();
@@ -70,6 +69,7 @@ public class PlanCuotaService {
 
 	public void deletePlanCuota(Long id) throws Exception {
 		// TODO Auto-generated method stub
+		String logMensaje = "Eliminando Plan Cuota ID: " + id;
 		try {
 			Optional<PlanCuota> planOptional = planCuotaRepository.findById(id);
 			if (planOptional.isPresent()) {
@@ -77,7 +77,7 @@ public class PlanCuotaService {
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
-			String logMensaje = e.getMessage();
+			logMensaje = "Ocurrio un error en el Plan Cuota: " + e.getMessage();
 			logger.error(logMensaje);
 			e.printStackTrace();
 			throw new Exception(logMensaje);

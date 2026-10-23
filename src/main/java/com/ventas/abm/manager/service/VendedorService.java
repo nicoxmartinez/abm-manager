@@ -1,6 +1,5 @@
 package com.ventas.abm.manager.service;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -11,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ventas.abm.manager.domain.Vendedor;
+import com.ventas.abm.manager.mapper.VendedorMapper;
 import com.ventas.abm.manager.models.VendedorDto;
 import com.ventas.abm.manager.repository.VendedorRepository;
 
@@ -20,18 +20,23 @@ public class VendedorService {
 	@Autowired
 	VendedorRepository vendedorRepository;
 
+	@Autowired
+	VendedorMapper vendedorMapper;
+
 	private static final Log logger = LogFactory.getLog(VendedorService.class);
 
 	public Vendedor createVendedor(Vendedor vendedor) throws Exception {
 		// TODO Auto-generated method stub
 		String logMensaje = "Creando registro Vendedor: " + vendedor.getNombre() + " " + vendedor.getApellido();
 		logger.info(logMensaje);
+		Optional<Vendedor> verificarCodigoVendedor = vendedorRepository.findByCodigo(vendedor.getCodigo());
+		if (!verificarCodigoVendedor.isPresent()) {
+			logMensaje = "Existe un registro con el legajo: " + vendedor.getCodigo();
+			logger.error(logMensaje);
+			throw new Exception(logMensaje);
+		}
 		try {
-			if (vendedorRepository.findByCodigo(vendedor.getCodigo()) != null) {
-				logMensaje = "Existe un registro con el legajo: " + vendedor.getCodigo();
-				logger.error(logMensaje);
-				throw new Exception(logMensaje);
-			}
+
 			Vendedor nuevoVendedor = new Vendedor();
 			nuevoVendedor.setNombre(vendedor.getNombre());
 			nuevoVendedor.setApellido(vendedor.getApellido());
@@ -43,8 +48,7 @@ public class VendedorService {
 			nuevoVendedor.setFechaBaja(null);
 			nuevoVendedor.setFechaModificacion(null);
 			vendedorRepository.save(nuevoVendedor);
-			logMensaje = "Registrado corretamente Vendedor: " + nuevoVendedor.getNombre() + " "
-					+ nuevoVendedor.getApellido();
+			logMensaje = "Registrado corretamente Vendedor: " + nuevoVendedor.getIdVendedor();
 			logger.info(logMensaje);
 			return nuevoVendedor;
 		} catch (Exception e) {
@@ -125,7 +129,7 @@ public class VendedorService {
 			logger.error("No se encontro registros con el nombre: " + nombre);
 			throw new Exception("No se encontro registros con el nombre: " + nombre);
 		}
-		List<VendedorDto> listaDto = mapearListaDto(listaVendedores);
+		List<VendedorDto> listaDto = vendedorMapper.mapearListaVendedorDto(listaVendedores);
 
 		return listaDto;
 	}
@@ -137,53 +141,22 @@ public class VendedorService {
 			logger.error("No se encontro registros con el apellido: " + apellido);
 			throw new Exception("No se encontro registros con el apellido: " + apellido);
 		}
-		List<VendedorDto> listaDto = mapearListaDto(listaVendedores);
+		List<VendedorDto> listaDto = vendedorMapper.mapearListaVendedorDto(listaVendedores);
 
 		return listaDto;
 	}
 
 	public VendedorDto getVendedorByCodigo(Integer codigo) throws Exception {
 		// TODO Auto-generated method stub
-		Vendedor vendedor = vendedorRepository.findByCodigo(codigo);
-		if (vendedor != null) {
-			VendedorDto dto = mapearDto(vendedor);
+		Optional<Vendedor> vendedor = vendedorRepository.findByCodigo(codigo);
+		if (vendedor.isPresent()) {
+			VendedorDto dto = vendedorMapper.mapearVendedorDto(vendedor.get());
 			return dto;
 		} else {
 			String logMensaje = "No se encontro Vendedor con el Código " + codigo;
 			logger.error(logMensaje);
 			throw new Exception(logMensaje);
 		}
-	}
-
-	private List<VendedorDto> mapearListaDto(List<Vendedor> listaVendedores) {
-		// TODO Auto-generated method stub
-		List<VendedorDto> listaDto = new ArrayList<>();
-
-		for (Vendedor vendedor : listaVendedores) {
-			VendedorDto vendedorDto = mapearDto(vendedor);
-			listaDto.add(vendedorDto);
-		}
-
-		return listaDto;
-	}
-
-	private VendedorDto mapearDto(Vendedor vendedor) {
-		// TODO Auto-generated method stub
-		VendedorDto dto = new VendedorDto();
-
-		if (vendedor.getIdVendedor() != null) {
-			dto.setIdVendedor(vendedor.getIdVendedor());
-		}
-		dto.setNombre(vendedor.getNombre());
-		dto.setApellido(vendedor.getApellido());
-		dto.setCodigo(vendedor.getCodigo());
-		dto.setDocumento(vendedor.getDocumento());
-		dto.setUsuario(vendedor.getUsuario());
-		dto.setFechaAlta(vendedor.getFechaAlta());
-		dto.setFechaBaja(vendedor.getFechaBaja());
-		dto.setFechaModificacion(vendedor.getFechaModificacion());
-
-		return dto;
 	}
 
 }

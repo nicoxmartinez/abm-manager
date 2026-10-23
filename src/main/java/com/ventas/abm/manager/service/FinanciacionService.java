@@ -51,27 +51,33 @@ public class FinanciacionService {
 		}
 
 		Financiacion nuevaFinanciacion = new Financiacion();
-
-		nuevaFinanciacion.setCodigo(financiacion.getCodigo());
-		nuevaFinanciacion.setDescripcion(financiacion.getDescripcion());
-		nuevaFinanciacion.setActiva(financiacion.getActiva());
-
-		nuevaFinanciacion = financiacionRepository.save(nuevaFinanciacion);
-
-		List<PlanCuota> listaNuevaPlanesCuotas = new ArrayList<>();
-		if (financiacion.getPlanCuota() != null) {
-			List<PlanCuota> listaPlanesCuotas = financiacion.getPlanCuota();
-			for (PlanCuota pc : listaPlanesCuotas) {
-				pc.setFinanciacion(nuevaFinanciacion);
-				PlanCuota nuevoPlanCuota = planCuotaService.createPlanCuota(pc);
-				listaNuevaPlanesCuotas.add(nuevoPlanCuota);
+		try {
+			// Datos Financiacion
+			nuevaFinanciacion.setCodigo(financiacion.getCodigo());
+			nuevaFinanciacion.setDescripcion(financiacion.getDescripcion());
+			nuevaFinanciacion.setActiva(financiacion.getActiva());
+			nuevaFinanciacion = financiacionRepository.save(nuevaFinanciacion);
+			// Datos de Plan Cuotas
+			List<PlanCuota> listaNuevaPlanesCuotas = new ArrayList<>();
+			if (financiacion.getPlanCuota() != null) {
+				List<PlanCuota> listaPlanesCuotas = financiacion.getPlanCuota();
+				for (PlanCuota pc : listaPlanesCuotas) {
+					pc.setFinanciacion(nuevaFinanciacion);
+					PlanCuota nuevoPlanCuota = planCuotaService.createPlanCuota(pc);
+					listaNuevaPlanesCuotas.add(nuevoPlanCuota);
+				}
+				nuevaFinanciacion.setPlanCuota(listaNuevaPlanesCuotas);
 			}
-			nuevaFinanciacion.setPlanCuota(listaNuevaPlanesCuotas);
+			financiacionRepository.save(nuevaFinanciacion);
+			logMensaje = "Creado correctamente Financiacion: " + nuevaFinanciacion.getIdFinanciacion();
+			logger.info(logMensaje);
+		} catch (Exception e) {
+			// TODO: handle exception
+			logMensaje = e.getMessage();
+			logger.error(logMensaje);
+			e.printStackTrace();
+			throw new Exception(logMensaje);
 		}
-		financiacionRepository.save(nuevaFinanciacion);
-		logMensaje = "Creado correctamente Financiacion: " + nuevaFinanciacion.getCodigo() + " "
-				+ nuevaFinanciacion.getDescripcion();
-		logger.info(logMensaje);
 
 		return nuevaFinanciacion;
 	}
@@ -82,22 +88,39 @@ public class FinanciacionService {
 		String logMensaje = "Modificando registro de Financiacion: " + financiacion.getCodigo() + " "
 				+ financiacion.getDescripcion();
 		logger.info(logMensaje);
-		Optional<Financiacion> financiacionDb = financiacionRepository.findById(financiacion.getIdFinanciacion());
-		if (financiacionDb.isPresent()) {
-			Financiacion financiacionActualizar = financiacionDb.get();
-			financiacionActualizar.setCodigo(financiacion.getCodigo());
-			financiacionActualizar.setDescripcion(financiacion.getDescripcion());
-			financiacionActualizar.setActiva(financiacion.getActiva());
-
+		Optional<Financiacion> financiacionOptional = financiacionRepository.findById(financiacion.getIdFinanciacion());
+		if (financiacionOptional.isPresent()) {
+			// Datos de Financiacion
+			Financiacion financiacionEnBd = financiacionOptional.get();
+			financiacionEnBd.setCodigo(financiacion.getCodigo());
+			financiacionEnBd.setDescripcion(financiacion.getDescripcion());
+			financiacionEnBd.setActiva(financiacion.getActiva());
+			// Datos de Plan Cuotas
 			List<PlanCuota> listaPlanescuotaActualizada = new ArrayList<>();
 			if (financiacion.getPlanCuota() != null && !financiacion.getPlanCuota().isEmpty()) {
-				List<PlanCuota> planesExistentes = financiacion.getPlanCuota().stream().filter(p -> p.getId() != null)
+				// Coleccion de Plan cuotas en DB
+				List<PlanCuota> planesCuotasExistentes = financiacionEnBd.getPlanCuota().stream()
+						.filter(pc -> pc.getId() != null).collect(Collectors.toList());
+				// Nueva coleccion de Plan cuotas
+				List<PlanCuota> planesCuotasNuevos = financiacion.getPlanCuota().stream()
+						.filter(pc -> pc.getId() == null).collect(Collectors.toList());
+				// Plan cuotas descartados
+				List<PlanCuota> planesParaEliminar = planesCuotasExistentes.stream().filter(
+						pDb -> financiacion.getPlanCuota().stream().noneMatch(pc -> pDb.getId().equals(pc.getId())))
 						.collect(Collectors.toList());
-				List<PlanCuota> planesCuotasNuevos = financiacion.getPlanCuota().stream().filter(p -> p.getId() == null)
-						.collect(Collectors.toList());
-
-				if (planesExistentes != null && !planesExistentes.isEmpty()) {
-					for (PlanCuota pc : planesExistentes) {
+				// Elimina Planes cuotas descartados
+				if (planesParaEliminar != null && !planesParaEliminar.isEmpty()) {
+					for (PlanCuota pc : planesParaEliminar) {
+						planCuotaService.deletePlanCuota(pc.getId());
+					}
+					financiacionEnBd.getPlanCuota().clear();
+					financiacionEnBd.setPlanCuota(null);
+					planesCuotasExistentes.clear();
+					planesCuotasExistentes = null;
+				}
+				// Modifica Planes cuotas existentes
+				if (planesCuotasExistentes != null && !planesCuotasExistentes.isEmpty()) {
+					for (PlanCuota pc : planesCuotasExistentes) {
 						PlanCuota pcExistenteModificado = planCuotaService.updatePlanCuota(pc);
 						if (pcExistenteModificado == null) {
 							logger.error("No se encontró el PlanCuota con ID: " + pc.getId());
@@ -105,11 +128,8 @@ public class FinanciacionService {
 						}
 						listaPlanescuotaActualizada.add(pcExistenteModificado);
 					}
-				} else {
-					for (PlanCuota pc : financiacionDb.get().getPlanCuota()) {
-						planCuotaService.deletePlanCuota(pc.getId());
-					}
 				}
+				// Crea Planes cuota nuevos
 				if (planesCuotasNuevos != null && !planesCuotasNuevos.isEmpty()) {
 					for (PlanCuota pc : planesCuotasNuevos) {
 						pc.setFinanciacion(financiacion);
@@ -121,16 +141,16 @@ public class FinanciacionService {
 						listaPlanescuotaActualizada.add(pcNuevo);
 					}
 				}
-				financiacionActualizar.getPlanCuota().clear();
-				financiacionActualizar.setPlanCuota(listaPlanescuotaActualizada);
+				financiacionEnBd.getPlanCuota().clear();
+				financiacionEnBd.setPlanCuota(listaPlanescuotaActualizada);
 			}
 
-			financiacionActualizar = financiacionRepository.save(financiacionActualizar);
-			logMensaje = "Modificado correctamente Financiacion: " + financiacionActualizar.getCodigo() + " "
-					+ financiacionActualizar.getDescripcion();
+			Financiacion financiacionModificado = financiacionRepository.save(financiacionEnBd);
+			logMensaje = "Modificado correctamente Financiacion: " + financiacionModificado.getCodigo() + " "
+					+ financiacionModificado.getDescripcion();
 			logger.info(logMensaje);
 
-			return financiacionActualizar;
+			return financiacionModificado;
 		} else {
 			logMensaje = "Financiacion no encontrada ID: " + financiacion.getIdFinanciacion();
 			logger.error(logMensaje);
@@ -147,7 +167,7 @@ public class FinanciacionService {
 			Financiacion bajaDeFinanciacion = financiacion.get();
 			bajaDeFinanciacion.setActiva(false);
 			financiacionRepository.save(bajaDeFinanciacion);
-			logMensaje = "Se dio de baja correctamente Almacén: " + bajaDeFinanciacion.getCodigo() + " "
+			logMensaje = "Se dio de baja correctamente Financiación: " + bajaDeFinanciacion.getCodigo() + " "
 					+ bajaDeFinanciacion.getDescripcion();
 			logger.info(logMensaje);
 			return bajaDeFinanciacion;

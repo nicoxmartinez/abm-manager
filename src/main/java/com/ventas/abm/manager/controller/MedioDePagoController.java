@@ -28,6 +28,7 @@ public class MedioDePagoController {
 
 	@PostMapping
 	public ResponseEntity<MedioDePago> crearMedioDePago(@RequestBody MedioDePago medioDePago) {
+		//TODO: process POST request
 		try {
 			MedioDePago nuevoMedioDePago = service.createMedioDePago(medioDePago);
 			return ResponseEntity.ok(nuevoMedioDePago);
@@ -39,6 +40,7 @@ public class MedioDePagoController {
 
 	@PutMapping
 	public ResponseEntity<MedioDePago> editarMedioDePago(@RequestBody MedioDePago medioDePago) {
+		//TODO: process PUT request
 		try {
 			MedioDePago modificarMedioDePago = service.modifyMedioDePago(medioDePago);
 			return ResponseEntity.ok(modificarMedioDePago);

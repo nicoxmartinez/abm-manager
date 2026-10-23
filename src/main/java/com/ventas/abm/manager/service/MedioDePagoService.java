@@ -43,6 +43,7 @@ public class MedioDePagoService {
 		}
 		MedioDePago medioDePagoNuevo = new MedioDePago();
 		try {
+			// Datos Medio de pago
 			medioDePagoNuevo.setCodigo(medioDePago.getCodigo());
 			medioDePagoNuevo.setDetalle(medioDePago.getDetalle());
 			medioDePagoNuevo.setAbreviatura(medioDePago.getAbreviatura());
@@ -51,6 +52,7 @@ public class MedioDePagoService {
 			medioDePagoNuevo.setHabilitado(medioDePago.getHabilitado());
 			medioDePagoNuevo.setPermiteBonificacion(medioDePago.getPermiteBonificacion());
 			medioDePagoNuevo.setFechaBaja(null);
+			// Datos Financiacion
 			if (medioDePago.getFinanciacion() != null) {
 				Financiacion financiacion = financiacionService
 						.getFinanciacionById(medioDePago.getFinanciacion().getIdFinanciacion());
@@ -59,8 +61,7 @@ public class MedioDePagoService {
 				}
 			}
 			medioDePagoRepository.save(medioDePagoNuevo);
-			logMensaje = "Registrada correctamente Medio de Pago: " + medioDePagoNuevo.getCodigo() + " "
-					+ medioDePagoNuevo.getDetalle();
+			logMensaje = "Registrada correctamente Medio de Pago ID: " + medioDePagoNuevo.getIdMedioPago();
 			logger.info(logMensaje);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -79,6 +80,7 @@ public class MedioDePagoService {
 		Optional<MedioDePago> medioDePagoOptional = medioDePagoRepository.findById(medioDePago.getIdMedioPago());
 		if (medioDePagoOptional.isPresent()) {
 			MedioDePago medioDePagoEnBd = medioDePagoOptional.get();
+			// Datos de Medio de pago
 			medioDePagoEnBd.setCodigo(medioDePago.getCodigo());
 			medioDePagoEnBd.setDetalle(medioDePago.getDetalle());
 			medioDePagoEnBd.setAbreviatura(medioDePago.getAbreviatura());
@@ -87,6 +89,7 @@ public class MedioDePagoService {
 			medioDePagoEnBd.setHabilitado(medioDePago.getHabilitado());
 			medioDePagoEnBd.setPermiteBonificacion(medioDePago.getPermiteBonificacion());
 			medioDePagoEnBd.setFechaBaja(medioDePago.getFechaBaja());
+			// Datos de Financiacion
 			if (medioDePago.getFinanciacion() != null) {
 				Financiacion financiacion = financiacionService
 						.getFinanciacionById(medioDePago.getFinanciacion().getIdFinanciacion());
@@ -97,7 +100,8 @@ public class MedioDePagoService {
 				medioDePagoEnBd.setFinanciacion(null);
 			}
 			MedioDePago medioDePagoModificado = medioDePagoRepository.save(medioDePagoEnBd);
-			logMensaje = "Modificado correctamente Medio de Pago ID: " + medioDePagoModificado.getIdMedioPago();
+			logMensaje = "Modificado correctamente Medio de Pago: " + medioDePagoModificado.getCodigo() + " "
+					+ medioDePagoModificado.getDetalle();
 			logger.info(logMensaje);
 			return medioDePagoModificado;
 		} else {

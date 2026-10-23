@@ -49,6 +49,7 @@ public class AlmacenService {
 		}
 		Almacen almacenNuevo = new Almacen();
 		try {
+			// Datos Tienda
 			if (almacen.getTienda() != null) {
 				Optional<Tienda> tiendaOptional = tiendaRepository.findById(almacen.getTienda().getIdTienda());
 				if (tiendaOptional.isPresent()) {
@@ -56,9 +57,11 @@ public class AlmacenService {
 					almacenNuevo.setTienda(tienda);
 				}
 			}
+			// Datos Almacen
 			almacenNuevo.setCodigo(almacen.getCodigo());
 			almacenNuevo.setDescripcion(almacen.getDescripcion());
 			almacenNuevo.setFechaBaja(null);
+			// Datos Domicilio
 			if (almacen.getDomicilio() != null) {
 				Domicilio domicilio = almacen.getDomicilio();
 				Domicilio domicilioAlmacen = domicilioService.createDomicilio(domicilio);
@@ -67,8 +70,7 @@ public class AlmacenService {
 				}
 			}
 			almacenRepository.save(almacenNuevo);
-			logMensaje = "Registrada correctamente Almacén: " + almacenNuevo.getCodigo() + " "
-					+ almacenNuevo.getDescripcion();
+			logMensaje = "Registrada correctamente Almacén ID: " + almacenNuevo.getIdAlmacen();
 			logger.info(logMensaje);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -88,6 +90,7 @@ public class AlmacenService {
 		Optional<Almacen> almacenOptional = almacenRepository.findById(almacen.getIdAlmacen());
 		if (almacenOptional.isPresent()) {
 			Almacen almacenEnBd = almacenOptional.get();
+			// Datos Tienda
 			if (almacen.getTienda() != null) {
 				Optional<Tienda> tiendaOptional = tiendaRepository.findById(almacen.getTienda().getIdTienda());
 				if (tiendaOptional.isPresent()) {
@@ -97,9 +100,11 @@ public class AlmacenService {
 			} else {
 				almacenEnBd.setTienda(null);
 			}
+			// Datos Almacen
 			almacenEnBd.setCodigo(almacen.getCodigo());
 			almacenEnBd.setDescripcion(almacen.getDescripcion());
 			almacenEnBd.setFechaBaja(almacen.getFechaBaja());
+			// Datos Domicilio
 			if (almacen.getDomicilio() != null) {
 				Domicilio domicilioAlmacen = almacen.getDomicilio();
 
@@ -120,7 +125,8 @@ public class AlmacenService {
 				almacenEnBd.setDomicilio(null);
 			}
 			Almacen almacenModificado = almacenRepository.save(almacenEnBd);
-			logMensaje = "Modificado correctamente Almacén ID: " + almacenModificado.getIdAlmacen();
+			logMensaje = "Modificado correctamente Almacén: " + almacenModificado.getCodigo() + " "
+					+ almacenModificado.getDescripcion();
 			logger.info(logMensaje);
 			return almacenModificado;
 		} else {

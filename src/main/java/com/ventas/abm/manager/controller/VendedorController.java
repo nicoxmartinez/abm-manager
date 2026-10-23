@@ -29,6 +29,7 @@ public class VendedorController {
 
 	@PostMapping
 	public ResponseEntity<Vendedor> crearVendedor(@RequestBody Vendedor vendedor) {
+		//TODO: process POST request
 		try {
 			Vendedor nuevaTienda = service.createVendedor(vendedor);
 			return ResponseEntity.ok(nuevaTienda);
@@ -40,6 +41,7 @@ public class VendedorController {
 
 	@PutMapping
 	public ResponseEntity<Vendedor> editarVendedor(@RequestBody Vendedor vendedor) {
+		//TODO: process PUT request
 		try {
 			Vendedor modificarVendedor = service.modifyVendedor(vendedor);
 			return ResponseEntity.ok(modificarVendedor);

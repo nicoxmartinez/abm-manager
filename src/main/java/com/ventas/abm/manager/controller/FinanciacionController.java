@@ -28,6 +28,7 @@ public class FinanciacionController {
 
 	@PostMapping
 	public ResponseEntity<Financiacion> crearFinanciacion(@RequestBody Financiacion financiacion) {
+		//TODO: process POST request
 		try {
 			Financiacion nuevaFinanciacion = service.createFinanciacion(financiacion);
 			return ResponseEntity.ok(nuevaFinanciacion);
@@ -39,6 +40,7 @@ public class FinanciacionController {
 
 	@PutMapping
 	public ResponseEntity<Financiacion> modificarFinanciacion(@RequestBody Financiacion financiacion) {
+		//TODO: process PUT request
 		try {
 			Financiacion modificarFinanciacion = service.modifyFinanciacion(financiacion);
 			return ResponseEntity.ok(modificarFinanciacion);

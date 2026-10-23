@@ -26,7 +26,7 @@ public class PuntoDeVentaService {
 
 	public PuntoDeVenta createPuntoDeVenta(PuntoDeVenta puntoDeVenta) throws Exception {
 		// TODO Auto-generated method stub
-		String logMensaje = "Creando registro de Punto de Venta";
+		String logMensaje = "Creando registro de Punto de Venta: " + puntoDeVenta.getNumeroTerminal() + " " + puntoDeVenta.getNombreTerminal();
 		logger.info(logMensaje);
 		PuntoDeVenta puntoDeVentaNuevo = new PuntoDeVenta();
 		if (puntoDeVenta.getNumeroTerminal() != null) {
@@ -40,14 +40,14 @@ public class PuntoDeVentaService {
 		} else {
 			logMensaje = "El Número del Punto de Venta es obligatorio";
 			logger.error(logMensaje);
-			throw new Exception(logMensaje);
+			throw new NullPointerException(logMensaje);
 		}
 		try {
 			puntoDeVentaNuevo.setNumeroTerminal(puntoDeVenta.getNumeroTerminal());
 			puntoDeVentaNuevo.setNombreTerminal(puntoDeVenta.getNombreTerminal());
 			puntoDeVentaNuevo.setNumeroDeCaja(puntoDeVenta.getNumeroDeCaja());
 			puntoDeVentaRepository.save(puntoDeVentaNuevo);
-			logMensaje = "Registrada correctamente Tienda: " + puntoDeVentaNuevo.getNumeroTerminal();
+			logMensaje = "Registrada correctamente Tienda: " + puntoDeVentaNuevo.getIdPuntoDeVenta();
 			logger.info(logMensaje);
 		} catch (Exception e) {
 			// TODO: handle exception

@@ -27,6 +27,7 @@ public class PuntoDeVentaController {
 
 	@PostMapping
 	public ResponseEntity<PuntoDeVenta> crearPuntoDeVenta(@RequestBody PuntoDeVenta puntoDeVenta) {
+		//TODO: process POST request
 		try {
 			PuntoDeVenta nuevoPuntoDeVenta = service.createPuntoDeVenta(puntoDeVenta);
 			return ResponseEntity.ok(nuevoPuntoDeVenta);
@@ -38,6 +39,7 @@ public class PuntoDeVentaController {
 
 	@PutMapping
 	public ResponseEntity<PuntoDeVenta> modificarPuntoDeVenta(@RequestBody PuntoDeVenta puntoDeVenta) {
+		//TODO: process PUT request
 		try {
 			PuntoDeVenta modificarPuntoDeVenta = service.modifyPuntoDeVenta(puntoDeVenta);
 			return ResponseEntity.ok(modificarPuntoDeVenta);

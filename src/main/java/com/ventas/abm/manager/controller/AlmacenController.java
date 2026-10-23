@@ -19,6 +19,7 @@ import com.ventas.abm.manager.domain.Almacen;
 import com.ventas.abm.manager.models.AlmacenDto;
 import com.ventas.abm.manager.service.AlmacenService;
 
+
 @RestController
 @RequestMapping("/almacen")
 public class AlmacenController {
@@ -28,6 +29,7 @@ public class AlmacenController {
 
 	@PostMapping
 	public ResponseEntity<Almacen> crearAlmacen(@RequestBody Almacen almacen) {
+		//TODO: process POST request
 		try {
 			Almacen nuevoAlmacen = service.createAlmacen(almacen);
 			return ResponseEntity.ok(nuevoAlmacen);
@@ -39,6 +41,7 @@ public class AlmacenController {
 
 	@PutMapping
 	public ResponseEntity<Almacen> modificarAlmacen(@RequestBody Almacen almacen) {
+		//TODO: process PUT request
 		try {
 			Almacen modificarAlmacen = service.modifyAlmacen(almacen);
 			return ResponseEntity.ok(modificarAlmacen);

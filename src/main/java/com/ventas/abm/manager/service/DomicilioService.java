@@ -20,7 +20,8 @@ public class DomicilioService {
 
 	public Domicilio createDomicilio(Domicilio domicilio) throws Exception {
 		// TODO Auto-generated method stub
-		String logMensaje = "Creando registro de Domicilio";
+		String logMensaje = "Creando registro de Domicilio: " + domicilio.getCalle() + " " + domicilio.getLocalidad()
+				+ " " + domicilio.getPartido() + " " + domicilio.getProvincia() + " " + domicilio.getPais();
 		logger.info(logMensaje);
 		Domicilio domicilioNuevo = new Domicilio();
 		try {
@@ -33,9 +34,7 @@ public class DomicilioService {
 			domicilioNuevo.setProvincia(domicilio.getProvincia());
 			domicilioNuevo.setPais(domicilio.getPais());
 			domicilioRepository.save(domicilioNuevo);
-			logMensaje = "Registrada correctamente Domicilio: " + domicilioNuevo.getCalle() + " "
-					+ domicilioNuevo.getLocalidad() + "" + domicilioNuevo.getPartido() + " "
-					+ domicilioNuevo.getProvincia();
+			logMensaje = "Registrada correctamente Domicilio ID:" + domicilioNuevo.getIdDomicilio();
 			logger.info(logMensaje);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -63,7 +62,9 @@ public class DomicilioService {
 			domicilioEnBd.setProvincia(domicilio.getProvincia());
 			domicilioEnBd.setPais(domicilio.getPais());
 			Domicilio domicilioModificado = domicilioRepository.save(domicilioEnBd);
-			logMensaje = "Modificado correctamente Domicilio ID: " + domicilioModificado.getIdDomicilio();
+			logMensaje = "Modificado correctamente Domicilio: " + domicilioEnBd.getCalle() + " "
+					+ domicilioEnBd.getLocalidad() + " " + domicilioEnBd.getPartido() + " "
+					+ domicilioEnBd.getProvincia() + " " + domicilioEnBd.getPais();
 			logger.info(logMensaje);
 			return domicilioModificado;
 		} else {
