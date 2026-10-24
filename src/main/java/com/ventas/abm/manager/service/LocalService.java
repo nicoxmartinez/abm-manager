@@ -43,23 +43,12 @@ public class LocalService {
 			logger.error(logMensaje);
 			throw new Exception(logMensaje);
 		}
-		if (local.getTipo() == null) {
-			logMensaje = "El Tipo de Tienda Requerido";
-			logger.error(logMensaje);
-			throw new NullPointerException(logMensaje);
-		} else if (local.getTipo().getDescripcion() != "Tienda Física") {
-			logMensaje = "Error en Tipo de Tienda: " + local.getTipo().getDescripcion();
-			logger.error(logMensaje);
-			throw new Exception(logMensaje);
-		}
 
 		Local nuevoLocal = new Local();
 		try {
 			// Datos de Tienda
 			nuevoLocal.setCodigo(local.getCodigo());
 			nuevoLocal.setDescripcion(local.getDescripcion());
-			TipoTienda tipoTienda = local.getTipo();
-			nuevoLocal.setTipo(tipoTienda);
 			nuevoLocal.setUsuario(local.getUsuario());
 			nuevoLocal.setEmail(local.getEmail());
 			nuevoLocal.setTelefono(local.getTelefono());
@@ -146,7 +135,7 @@ public class LocalService {
 			logMensaje = "Modificado correctamente Local: " + localModificado.getCodigo() + " "
 					+ localModificado.getDescripcion();
 			logger.info(logMensaje);
-			return localEnBd;
+			return localModificado;
 		} else {
 			logMensaje = "No existe un Local con ID: " + local.getIdTienda();
 			logger.error(logMensaje);

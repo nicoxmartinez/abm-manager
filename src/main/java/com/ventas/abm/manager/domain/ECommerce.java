@@ -16,5 +16,23 @@ public class ECommerce extends Tienda implements Serializable {
 
 	@Column(name = "DOMINIO_WEB")
 	private String dominio;
-	
+
+	public ECommerce() {
+		// TODO Auto-generated constructor stub
+		super();
+		this.setTipo(TipoTienda.VIRTUAL);
+	}
+
+	public String getDominio() {
+		return dominio;
+	}
+
+	public void setDominio(String dominio) {
+		this.dominio = dominio;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 }

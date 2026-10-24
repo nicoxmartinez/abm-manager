@@ -37,6 +37,8 @@ public class Local extends Tienda {
 
 	public Local() {
 		// TODO Auto-generated constructor stub
+		super();
+		this.setTipo(TipoTienda.FISICA);
 	}
 
 	public List<PuntoDeVenta> getPuntoDeVenta() {
