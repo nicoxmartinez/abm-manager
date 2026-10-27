@@ -14,7 +14,7 @@ import com.ventas.abm.manager.domain.Local;
 import com.ventas.abm.manager.service.LocalService;
 
 @RestController
-@RequestMapping("/Local")
+@RequestMapping("/local")
 public class LocalController {
 
 	@Autowired

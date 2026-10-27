@@ -6,6 +6,7 @@ public class PuntoDeVentaDto {
 	private Integer numeroTerminal;
 	private String nombreTerminal;
 	private Short numeroDeCaja;
+	private TiendaDto local;
 
 	public PuntoDeVentaDto() {
 		super();
@@ -42,6 +43,14 @@ public class PuntoDeVentaDto {
 
 	public void setNumeroDeCaja(Short numeroDeCaja) {
 		this.numeroDeCaja = numeroDeCaja;
+	}
+
+	public TiendaDto getLocal() {
+		return local;
+	}
+
+	public void setLocal(TiendaDto local) {
+		this.local = local;
 	}
 
 }

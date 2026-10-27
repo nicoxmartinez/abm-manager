@@ -8,6 +8,7 @@ import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ventas.abm.manager.domain.Local;
 import com.ventas.abm.manager.domain.PuntoDeVenta;
 import com.ventas.abm.manager.mapper.PuntoDeVentaMapper;
 import com.ventas.abm.manager.models.PuntoDeVentaDto;
@@ -20,13 +21,17 @@ public class PuntoDeVentaService {
 	PuntoDeVentaRepository puntoDeVentaRepository;
 
 	@Autowired
+	LocalService localService;
+
+	@Autowired
 	PuntoDeVentaMapper puntoDeVentaMapper;
 
 	private static final Log logger = LogFactory.getLog(PuntoDeVentaService.class);
 
 	public PuntoDeVenta createPuntoDeVenta(PuntoDeVenta puntoDeVenta) throws Exception {
 		// TODO Auto-generated method stub
-		String logMensaje = "Creando registro de Punto de Venta: " + puntoDeVenta.getNumeroTerminal() + " " + puntoDeVenta.getNombreTerminal();
+		String logMensaje = "Creando registro de Punto de Venta: " + puntoDeVenta.getNumeroTerminal() + " "
+				+ puntoDeVenta.getNombreTerminal();
 		logger.info(logMensaje);
 		PuntoDeVenta puntoDeVentaNuevo = new PuntoDeVenta();
 		if (puntoDeVenta.getNumeroTerminal() != null) {
@@ -43,11 +48,19 @@ public class PuntoDeVentaService {
 			throw new NullPointerException(logMensaje);
 		}
 		try {
+			// Punto de venta
 			puntoDeVentaNuevo.setNumeroTerminal(puntoDeVenta.getNumeroTerminal());
 			puntoDeVentaNuevo.setNombreTerminal(puntoDeVenta.getNombreTerminal());
 			puntoDeVentaNuevo.setNumeroDeCaja(puntoDeVenta.getNumeroDeCaja());
+			// Asociar Local
+			if (puntoDeVenta.getLocal() != null) {
+				Local local = localService.getLocalById(puntoDeVenta.getLocal().getIdTienda());
+				if (local != null) {
+					puntoDeVentaNuevo.setLocal(local);
+				}
+			}
 			puntoDeVentaRepository.save(puntoDeVentaNuevo);
-			logMensaje = "Registrada correctamente Tienda: " + puntoDeVentaNuevo.getIdPuntoDeVenta();
+			logMensaje = "Registrada correctamente Punto de Venta: " + puntoDeVentaNuevo.getIdPuntoDeVenta();
 			logger.info(logMensaje);
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -66,10 +79,20 @@ public class PuntoDeVentaService {
 		logger.info(logMensaje);
 		Optional<PuntoDeVenta> puntoDeVentaOptional = puntoDeVentaRepository.findById(puntoDeVenta.getIdPuntoDeVenta());
 		if (puntoDeVentaOptional.isPresent()) {
+			// Datos de Punto de venta
 			PuntoDeVenta puntoDeVentaEnBd = puntoDeVentaOptional.get();
 			puntoDeVentaEnBd.setNumeroTerminal(puntoDeVenta.getNumeroTerminal());
 			puntoDeVentaEnBd.setNombreTerminal(puntoDeVenta.getNombreTerminal());
 			puntoDeVentaEnBd.setNumeroDeCaja(puntoDeVenta.getNumeroDeCaja());
+			// Local
+			if (puntoDeVenta.getLocal() != null) {
+				Local local = localService.getLocalById(puntoDeVenta.getLocal().getIdTienda());
+				if (local != null) {
+					puntoDeVentaEnBd.setLocal(local);
+				}
+			} else {
+				puntoDeVentaEnBd.setLocal(null);
+			}
 			PuntoDeVenta puntoDeVentaModificado = puntoDeVentaRepository.save(puntoDeVentaEnBd);
 			logMensaje = "Modificado correctamente Punto De Venta ID: " + puntoDeVentaModificado.getNumeroTerminal();
 			logger.info(logMensaje);

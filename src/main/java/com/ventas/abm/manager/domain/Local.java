@@ -3,11 +3,14 @@ package com.ventas.abm.manager.domain;
 import java.time.LocalTime;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.OrderColumn;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 
@@ -21,9 +24,10 @@ public class Local extends Tienda {
 	 */
 	private static final long serialVersionUID = -375438973181619417L;
 
-	@OneToMany
-	@JoinColumn(name = "ID_PUNTO_VENTA")
-	private List<PuntoDeVenta> puntoDeVenta;
+	@OneToMany(mappedBy = "local")
+	@OrderColumn(name = "NUMERO_CAJA")
+	@JsonIgnore
+	private List<PuntoDeVenta> puntosDeVenta;
 
 	@Column(name = "HORARIO_APERTURA")
 	private LocalTime horarioApertura;
@@ -41,12 +45,8 @@ public class Local extends Tienda {
 		this.setTipo(TipoTienda.FISICA);
 	}
 
-	public List<PuntoDeVenta> getPuntoDeVenta() {
-		return puntoDeVenta;
-	}
-
-	public void setPuntoDeVenta(List<PuntoDeVenta> puntoDeVenta) {
-		this.puntoDeVenta = puntoDeVenta;
+	public List<PuntoDeVenta> getPuntosDeVenta() {
+		return puntosDeVenta;
 	}
 
 	public LocalTime getHorarioApertura() {

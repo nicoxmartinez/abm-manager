@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,15 +27,20 @@ public class PuntoDeVenta {
 	@Column(name = "NUMERO_CAJA")
 	private Short numeroDeCaja;
 
+	@ManyToOne
+	@JoinColumn(name = "ID_TIENDA")
+	private Local local;
+
 	public PuntoDeVenta() {
 		// TODO Auto-generated constructor stub
 		super();
 	}
 
-	public PuntoDeVenta(Integer numeroTerminal, String nombreTerminal, Short numeroDeCaja) {
+	public PuntoDeVenta(Integer numeroTerminal, String nombreTerminal, Short numeroDeCaja, Local local) {
 		this.numeroTerminal = numeroTerminal;
 		this.nombreTerminal = nombreTerminal;
 		this.numeroDeCaja = numeroDeCaja;
+		this.local = local;
 	}
 
 	public Long getIdPuntoDeVenta() {
@@ -66,6 +73,14 @@ public class PuntoDeVenta {
 
 	public void setNumeroDeCaja(Short numeroDeCaja) {
 		this.numeroDeCaja = numeroDeCaja;
+	}
+
+	public Local getLocal() {
+		return local;
+	}
+
+	public void setLocal(Local local) {
+		this.local = local;
 	}
 
 }

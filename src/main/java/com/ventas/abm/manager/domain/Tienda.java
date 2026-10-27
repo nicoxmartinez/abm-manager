@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -50,9 +50,9 @@ public class Tienda implements Serializable {
 	@Column(name = "TELEFONO")
 	private String telefono;
 
-	@OneToMany
+	@OneToMany(mappedBy = "tienda")
 	@OrderBy(value = "ID_ALMACEN")
-	@JsonManagedReference
+	@JsonIgnore
 	private List<Almacen> almacenes;
 
 	@Column(name = "FECHA_ALTA")
@@ -136,10 +136,6 @@ public class Tienda implements Serializable {
 
 	public List<Almacen> getAlmacenes() {
 		return almacenes;
-	}
-
-	public void setAlmacenes(List<Almacen> almacenes) {
-		this.almacenes = almacenes;
 	}
 
 	public Date getFechaAlta() {

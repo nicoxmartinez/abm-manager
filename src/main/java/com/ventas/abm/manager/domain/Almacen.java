@@ -3,8 +3,6 @@ package com.ventas.abm.manager.domain;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,7 +26,6 @@ public class Almacen implements Serializable {
 
 	@ManyToOne
 	@JoinColumn(name = "ID_TIENDA")
-	@JsonBackReference
 	private Tienda tienda;
 
 	@Column(name = "CODIGO")

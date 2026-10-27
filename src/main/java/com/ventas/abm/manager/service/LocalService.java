@@ -1,8 +1,6 @@
 package com.ventas.abm.manager.service;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 
 import org.apache.juli.logging.Log;
@@ -12,8 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.ventas.abm.manager.domain.Domicilio;
 import com.ventas.abm.manager.domain.Local;
-import com.ventas.abm.manager.domain.PuntoDeVenta;
-import com.ventas.abm.manager.domain.TipoTienda;
 import com.ventas.abm.manager.repository.LocalRepository;
 
 import jakarta.transaction.Transactional;
@@ -26,9 +22,6 @@ public class LocalService {
 
 	@Autowired
 	DomicilioService domicilioService;
-
-	@Autowired
-	PuntoDeVentaService puntoDeVentaService;
 
 	private static final Log logger = LogFactory.getLog(LocalService.class);
 
@@ -65,18 +58,6 @@ public class LocalService {
 					nuevoLocal.setDomicilio(domicilioLocal);
 				}
 			}
-			// Punto de venta
-			if (local.getPuntoDeVenta() != null) {
-				List<PuntoDeVenta> listaPuntosDeVenta = local.getPuntoDeVenta();
-				List<PuntoDeVenta> nuevaListaPuntoDeVenta = new ArrayList<>();
-				for (PuntoDeVenta puntoDeVenta : listaPuntosDeVenta) {
-					PuntoDeVenta pdv = puntoDeVentaService.getPuntoDeVentaById(puntoDeVenta.getIdPuntoDeVenta());
-					if (pdv != null) {
-						listaPuntosDeVenta.add(pdv);
-					}
-				}
-				nuevoLocal.setPuntoDeVenta(nuevaListaPuntoDeVenta);
-			}
 			localRepository.save(nuevoLocal);
 			logMensaje = "Registrado correctamente Local ID: " + nuevoLocal.getIdTienda();
 			logger.info(logMensaje);
@@ -90,6 +71,7 @@ public class LocalService {
 		return nuevoLocal;
 	}
 
+	@Transactional
 	public Local modifyLocal(Local local) throws Exception {
 		// TODO Auto-generated method stub
 		String logMensaje = "Modificando registro de Local ID: " + local.getIdTienda();
@@ -97,17 +79,6 @@ public class LocalService {
 		if (localOptional.isPresent()) {
 			Local localEnBd = localOptional.get();
 			// Datos de Tienda
-			if (local.getTipo() == null) {
-				logMensaje = "El Tipo de Tienda Requerido";
-				logger.error(logMensaje);
-				throw new NullPointerException(logMensaje);
-			} else if (local.getTipo().getDescripcion() != "Tienda Física") {
-				logMensaje = "Error en Tipo de Tienda: " + local.getTipo().getDescripcion();
-				logger.error(logMensaje);
-				throw new Exception(logMensaje);
-			}
-			TipoTienda tipoTienda = local.getTipo();
-			localEnBd.setTipo(tipoTienda);
 			localEnBd.setCodigo(local.getCodigo());
 			localEnBd.setDescripcion(local.getDescripcion());
 			localEnBd.setUsuario(local.getUsuario());
@@ -129,8 +100,6 @@ public class LocalService {
 				domicilioService.deleteDomicilio(localEnBd.getDomicilio().getIdDomicilio());
 				localEnBd.setDomicilio(null);
 			}
-			// Datos de Punto de venta
-			
 			Local localModificado = localRepository.save(localEnBd);
 			logMensaje = "Modificado correctamente Local: " + localModificado.getCodigo() + " "
 					+ localModificado.getDescripcion();
@@ -142,5 +111,19 @@ public class LocalService {
 			throw new Exception(logMensaje);
 		}
 	}
-	
+
+	public Local getLocalById(Long idTienda) {
+		// TODO Auto-generated method stub
+		Local local = new Local();
+		Optional<Local> localOptional = localRepository.findById(idTienda);
+		if (localOptional.isPresent()) {
+			local = localOptional.get();
+			return local;
+		} else {
+			String logMensaje = "No se encontraron Local con el ID: " + idTienda;
+			logger.error(logMensaje);
+			return null;
+		}
+	}
+
 }

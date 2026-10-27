@@ -3,8 +3,8 @@ package com.ventas.abm.manager.service;
 import java.util.Date;
 import java.util.Optional;
 
+import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.apache.juli.logging.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
