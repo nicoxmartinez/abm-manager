@@ -41,9 +41,8 @@ public class ECommerceService {
 			nuevoECommerce.setFechaAlta(new Date());
 			nuevoECommerce.setFechaBaja(null);
 			ecommerceRepository.save(nuevoECommerce);
-			logMensaje = "Registrado correctamente Local ID: " + nuevoECommerce.getIdTienda();
+			logMensaje = "Registrado correctamente ECommerce ID: " + nuevoECommerce.getIdTienda();
 			logger.info(logMensaje);
-			return null;
 		} catch (Exception e) {
 			// TODO: handle exception
 			logMensaje = e.getMessage();
@@ -51,6 +50,7 @@ public class ECommerceService {
 			e.printStackTrace();
 			throw new Exception(logMensaje);
 		}
+		return nuevoECommerce;
 	}
 
 	public ECommerce modifyECommerce(ECommerce ecommerce) throws Exception {
