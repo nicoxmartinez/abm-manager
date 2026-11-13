@@ -1,24 +1,66 @@
-# Compiled class file
-*.class
-
-# Log file
-*.log
-
-# BlueJ files
-*.ctxt
-
-# Mobile Tools for Java (J2ME)
-.mtj.tmp/
-
-# Package Files #
+# ============================================ 
+# MAVEN - Compilación y dependencias
+# ============================================
+target/
+pom.properties
 *.jar
 *.war
-*.nar
 *.ear
-*.zip
-*.tar.gz
-*.rar
+*-sources.jar
+*-javadoc.jar
 
-# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
-hs_err_pid*
-replay_pid*
+# ============================================
+# IDEs (Eclipse, IntelliJ IDEA, VS Code)
+# ============================================
+# Eclipse
+.settings/
+.project
+.classpath
+bin/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# Visual Studio Code
+.vscode/
+.history/
+
+# ============================================
+# SISTEMA OPERATIVO
+# ============================================
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+
+# Linux
+.directory
+*~
+
+# ============================================
+# CONFIGURACIÓN Y ENTORNO (Spring Boot)
+# ============================================
+application-local.properties
+application-dev.yml
+application-prod.yml
+.env
+
+# Logs de la aplicación
+logs/
+*.log
+
+# Archivos temporales o de caché
+.mvn/timing.flag
+.factorypath
