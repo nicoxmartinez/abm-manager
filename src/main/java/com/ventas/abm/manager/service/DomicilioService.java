@@ -1,107 +1,15 @@
 package com.ventas.abm.manager.service;
 
-import java.util.Optional;
-
-import org.apache.juli.logging.Log;
-import org.apache.juli.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.ventas.abm.manager.domain.Domicilio;
-import com.ventas.abm.manager.repository.DomicilioRepository;
 
-@Service
-public class DomicilioService {
+public interface DomicilioService {
 
-	@Autowired
-	DomicilioRepository domicilioRepository;
+	Domicilio createDomicilio(Domicilio domicilio) throws Exception;
 
-	private static final Log logger = LogFactory.getLog(DomicilioService.class);
+	Domicilio modifyDomicilio(Domicilio domicilio) throws Exception;
 
-	public Domicilio createDomicilio(Domicilio domicilio) throws Exception {
-		// TODO Auto-generated method stub
-		String logMensaje = "Creando registro de Domicilio: " + domicilio.getCalle() + " " + domicilio.getLocalidad()
-				+ " " + domicilio.getPartido() + " " + domicilio.getProvincia() + " " + domicilio.getPais();
-		logger.info(logMensaje);
-		Domicilio domicilioNuevo = new Domicilio();
-		try {
-			domicilioNuevo.setCalle(domicilio.getCalle());
-			domicilioNuevo.setNumero(domicilio.getNumero());
-			domicilioNuevo.setLocalidad(domicilio.getLocalidad());
-			domicilioNuevo.setPartido(domicilio.getPartido());
-			domicilioNuevo.setCodigoPostal(domicilio.getCodigoPostal());
-			domicilioNuevo.setEntreCalles(domicilio.getEntreCalles());
-			domicilioNuevo.setProvincia(domicilio.getProvincia());
-			domicilioNuevo.setPais(domicilio.getPais());
-			domicilioRepository.save(domicilioNuevo);
-			logMensaje = "Registrada correctamente Domicilio ID:" + domicilioNuevo.getIdDomicilio();
-			logger.info(logMensaje);
-		} catch (Exception e) {
-			// TODO: handle exception
-			logMensaje = e.getMessage();
-			logger.error(logMensaje);
-			e.printStackTrace();
-			throw new Exception(logMensaje);
-		}
-		return domicilioNuevo;
-	}
+	void deleteDomicilio(Long idDomicilio);
 
-	public Domicilio modifyDomicilio(Domicilio domicilio) throws Exception {
-		// TODO Auto-generated method stub
-		String logMensaje = "Modificando registro Domicilio ID: " + domicilio.getIdDomicilio();
-		logger.info(logMensaje);
-		Optional<Domicilio> domicilioOptional = domicilioRepository.findById(domicilio.getIdDomicilio());
-		if (domicilioOptional.isPresent()) {
-			Domicilio domicilioEnBd = domicilioOptional.get();
-			domicilioEnBd.setCalle(domicilio.getCalle());
-			domicilioEnBd.setNumero(domicilio.getNumero());
-			domicilioEnBd.setEntreCalles(domicilio.getEntreCalles());
-			domicilioEnBd.setLocalidad(domicilio.getLocalidad());
-			domicilioEnBd.setPartido(domicilio.getPartido());
-			domicilioEnBd.setCodigoPostal(domicilio.getCodigoPostal());
-			domicilioEnBd.setProvincia(domicilio.getProvincia());
-			domicilioEnBd.setPais(domicilio.getPais());
-			Domicilio domicilioModificado = domicilioRepository.save(domicilioEnBd);
-			logMensaje = "Modificado correctamente Domicilio: " + domicilioEnBd.getCalle() + " "
-					+ domicilioEnBd.getLocalidad() + " " + domicilioEnBd.getPartido() + " "
-					+ domicilioEnBd.getProvincia() + " " + domicilioEnBd.getPais();
-			logger.info(logMensaje);
-			return domicilioModificado;
-		} else {
-			logMensaje = "No existe un Domicilio con ID: " + domicilio.getIdDomicilio();
-			logger.error(logMensaje);
-			throw new Exception(logMensaje);
-		}
-	}
-
-	public void deleteDomicilio(Long idDomicilio) {
-		// TODO Auto-generated method stub
-		String logMensaje = "Eliminando registro Domicilio ID: " + idDomicilio;
-		logger.info(logMensaje);
-		Optional<Domicilio> domicilioOptional = domicilioRepository.findById(idDomicilio);
-		if (domicilioOptional.isPresent()) {
-			Domicilio domicilio = domicilioOptional.get();
-			domicilioRepository.delete(domicilio);
-			logger.info("Domicilio eliminado correctamente con ID: " + idDomicilio);
-		} else {
-			logger.error("No se encontró Domicilio con el ID: " + idDomicilio);
-		}
-	}
-
-	public Domicilio getDomicilioById(Long idDomicilio) {
-		// TODO Auto-generated method stub
-		Domicilio domicilio = new Domicilio();
-		try {
-			Optional<Domicilio> domicilioOptional = domicilioRepository.findById(idDomicilio);
-			if (domicilioOptional.isPresent()) {
-				domicilio = domicilioOptional.get();
-			}
-			return domicilio;
-		} catch (Exception e) {
-			// TODO: handle exception
-			logger.error("No se encontró Domicilio con el ID: " + idDomicilio);
-			return null;
-		}
-	}
+	Domicilio getDomicilioById(Long idDomicilio);
 
 }
