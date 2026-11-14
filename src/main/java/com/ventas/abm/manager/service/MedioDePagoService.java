@@ -15,6 +15,8 @@ public interface MedioDePagoService {
 
 	MedioDePago getMedioDePagoById(Long idMedioPago) throws Exception;
 
+	List<MedioDePagoDto> getAllMedioDePagoHabilitados() throws Exception;
+
 	MedioDePagoDto getMedioDePagoByCodigo(Integer codigo) throws Exception;
 
 	List<MedioDePagoDto> getMedioDePagoByDetalle(String detalle) throws Exception;
