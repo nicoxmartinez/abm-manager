@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ventas.abm.manager.domain.Vendedor;
-import com.ventas.abm.manager.models.VendedorDto;
+import com.ventas.abm.manager.model.VendedorDto;
 import com.ventas.abm.manager.service.VendedorService;
 
 @RestController

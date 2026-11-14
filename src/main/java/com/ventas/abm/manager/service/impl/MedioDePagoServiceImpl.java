@@ -13,7 +13,7 @@ import com.ventas.abm.manager.domain.Financiacion;
 import com.ventas.abm.manager.domain.MedioDePago;
 import com.ventas.abm.manager.domain.TipoMedioPago;
 import com.ventas.abm.manager.mapper.MedioDePagoMapper;
-import com.ventas.abm.manager.models.MedioDePagoDto;
+import com.ventas.abm.manager.model.MedioDePagoDto;
 import com.ventas.abm.manager.repository.MedioDePagoRepository;
 import com.ventas.abm.manager.service.FinanciacionService;
 import com.ventas.abm.manager.service.MedioDePagoService;

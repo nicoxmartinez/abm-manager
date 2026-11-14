@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.ventas.abm.manager.domain.Domicilio;
 import com.ventas.abm.manager.repository.DomicilioRepository;
-import com.ventas.abm.manager.service.DomicilioService;
 
 @Service
 public class DomicilioServiceImpl implements DomicilioService {

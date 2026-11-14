@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ventas.abm.manager.domain.Tienda;
-import com.ventas.abm.manager.models.TiendaDto;
+import com.ventas.abm.manager.model.TiendaDto;
 import com.ventas.abm.manager.service.TiendaService;
 
 @RestController

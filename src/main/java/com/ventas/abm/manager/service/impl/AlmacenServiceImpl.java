@@ -13,7 +13,7 @@ import com.ventas.abm.manager.domain.Almacen;
 import com.ventas.abm.manager.domain.Domicilio;
 import com.ventas.abm.manager.domain.Tienda;
 import com.ventas.abm.manager.mapper.AlmacenMapper;
-import com.ventas.abm.manager.models.AlmacenDto;
+import com.ventas.abm.manager.model.AlmacenDto;
 import com.ventas.abm.manager.repository.AlmacenRepository;
 import com.ventas.abm.manager.repository.TiendaRepository;
 import com.ventas.abm.manager.service.AlmacenService;

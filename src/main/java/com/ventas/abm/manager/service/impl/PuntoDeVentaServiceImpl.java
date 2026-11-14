@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 import com.ventas.abm.manager.domain.Local;
 import com.ventas.abm.manager.domain.PuntoDeVenta;
 import com.ventas.abm.manager.mapper.PuntoDeVentaMapper;
-import com.ventas.abm.manager.models.PuntoDeVentaDto;
+import com.ventas.abm.manager.model.PuntoDeVentaDto;
 import com.ventas.abm.manager.repository.PuntoDeVentaRepository;
 import com.ventas.abm.manager.service.LocalService;
 import com.ventas.abm.manager.service.PuntoDeVentaService;

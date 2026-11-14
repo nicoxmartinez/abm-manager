@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ventas.abm.manager.domain.MedioDePago;
-import com.ventas.abm.manager.models.MedioDePagoDto;
+import com.ventas.abm.manager.model.MedioDePagoDto;
 import com.ventas.abm.manager.service.MedioDePagoService;
 
 @RestController

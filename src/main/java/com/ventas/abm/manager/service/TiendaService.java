@@ -3,7 +3,7 @@ package com.ventas.abm.manager.service;
 import java.util.List;
 
 import com.ventas.abm.manager.domain.Tienda;
-import com.ventas.abm.manager.models.TiendaDto;
+import com.ventas.abm.manager.model.TiendaDto;
 
 public interface TiendaService {
 

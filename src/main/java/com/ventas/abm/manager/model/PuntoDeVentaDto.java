@@ -1,4 +1,4 @@
-package com.ventas.abm.manager.models;
+package com.ventas.abm.manager.model;
 
 public class PuntoDeVentaDto {
 

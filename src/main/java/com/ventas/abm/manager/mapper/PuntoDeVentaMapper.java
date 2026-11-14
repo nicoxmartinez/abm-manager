@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.ventas.abm.manager.domain.PuntoDeVenta;
-import com.ventas.abm.manager.models.PuntoDeVentaDto;
+import com.ventas.abm.manager.model.PuntoDeVentaDto;
 
 @Component
 public class PuntoDeVentaMapper {

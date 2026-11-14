@@ -3,7 +3,7 @@ package com.ventas.abm.manager.service;
 import java.util.List;
 
 import com.ventas.abm.manager.domain.Financiacion;
-import com.ventas.abm.manager.models.FinanciacionDto;
+import com.ventas.abm.manager.model.FinanciacionDto;
 
 public interface FinanciacionService {
 

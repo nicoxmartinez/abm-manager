@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ventas.abm.manager.domain.Almacen;
-import com.ventas.abm.manager.models.AlmacenDto;
+import com.ventas.abm.manager.model.AlmacenDto;
 import com.ventas.abm.manager.service.AlmacenService;
 
 

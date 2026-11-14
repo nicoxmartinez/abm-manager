@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ventas.abm.manager.domain.Almacen;
-import com.ventas.abm.manager.models.AlmacenDto;
-import com.ventas.abm.manager.models.TiendaDto;
+import com.ventas.abm.manager.model.AlmacenDto;
+import com.ventas.abm.manager.model.TiendaDto;
 
 @Component
 public class AlmacenMapper {

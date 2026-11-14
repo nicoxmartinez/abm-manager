@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.ventas.abm.manager.domain.MedioDePago;
-import com.ventas.abm.manager.models.FinanciacionDto;
-import com.ventas.abm.manager.models.MedioDePagoDto;
+import com.ventas.abm.manager.model.FinanciacionDto;
+import com.ventas.abm.manager.model.MedioDePagoDto;
 
 @Component
 public class MedioDePagoMapper {

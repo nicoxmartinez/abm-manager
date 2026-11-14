@@ -2,7 +2,7 @@ package com.ventas.abm.manager.service;
 
 import java.util.List;
 import com.ventas.abm.manager.domain.Almacen;
-import com.ventas.abm.manager.models.AlmacenDto;
+import com.ventas.abm.manager.model.AlmacenDto;
 
 public interface AlmacenService {
 

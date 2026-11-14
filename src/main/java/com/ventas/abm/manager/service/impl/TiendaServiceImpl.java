@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.ventas.abm.manager.domain.Tienda;
 import com.ventas.abm.manager.mapper.TiendaMapper;
-import com.ventas.abm.manager.models.TiendaDto;
+import com.ventas.abm.manager.model.TiendaDto;
 import com.ventas.abm.manager.repository.TiendaRepository;
 import com.ventas.abm.manager.service.TiendaService;
 

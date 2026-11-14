@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 
 import com.ventas.abm.manager.domain.Financiacion;
 import com.ventas.abm.manager.domain.PlanCuota;
-import com.ventas.abm.manager.models.FinanciacionDto;
+import com.ventas.abm.manager.model.FinanciacionDto;
 
 @Component
 public class FinanciacionMapper {

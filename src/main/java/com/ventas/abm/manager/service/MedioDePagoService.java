@@ -3,7 +3,7 @@ package com.ventas.abm.manager.service;
 import java.util.List;
 
 import com.ventas.abm.manager.domain.MedioDePago;
-import com.ventas.abm.manager.models.MedioDePagoDto;
+import com.ventas.abm.manager.model.MedioDePagoDto;
 
 public interface MedioDePagoService {
 

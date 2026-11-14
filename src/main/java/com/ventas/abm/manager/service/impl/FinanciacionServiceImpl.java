@@ -14,7 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.ventas.abm.manager.domain.Financiacion;
 import com.ventas.abm.manager.domain.PlanCuota;
 import com.ventas.abm.manager.mapper.FinanciacionMapper;
-import com.ventas.abm.manager.models.FinanciacionDto;
+import com.ventas.abm.manager.model.FinanciacionDto;
 import com.ventas.abm.manager.repository.FinanciacionRepository;
 import com.ventas.abm.manager.service.FinanciacionService;
 import com.ventas.abm.manager.service.PlanCuotaService;

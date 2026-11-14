@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ventas.abm.manager.domain.PuntoDeVenta;
-import com.ventas.abm.manager.models.PuntoDeVentaDto;
+import com.ventas.abm.manager.model.PuntoDeVentaDto;
 import com.ventas.abm.manager.service.PuntoDeVentaService;
 
 @RestController

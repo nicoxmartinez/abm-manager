@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Component;
 
 import com.ventas.abm.manager.domain.Tienda;
-import com.ventas.abm.manager.models.TiendaDto;
+import com.ventas.abm.manager.model.TiendaDto;
 
 @Component
 public class TiendaMapper {

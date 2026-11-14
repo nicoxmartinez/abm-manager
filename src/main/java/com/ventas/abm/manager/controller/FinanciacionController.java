@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.ventas.abm.manager.domain.Financiacion;
-import com.ventas.abm.manager.models.FinanciacionDto;
+import com.ventas.abm.manager.model.FinanciacionDto;
 import com.ventas.abm.manager.service.FinanciacionService;
 
 @RestController
