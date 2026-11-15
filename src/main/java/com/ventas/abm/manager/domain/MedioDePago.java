@@ -23,7 +23,7 @@ public class MedioDePago {
 	private Long idMedioPago;
 
 	@Column(name = "CODIGO")
-	private int codigo;
+	private Integer codigo;
 
 	@Column(name = "DETALLE")
 	private String detalle;
@@ -69,11 +69,11 @@ public class MedioDePago {
 		this.idMedioPago = idMedioPago;
 	}
 
-	public int getCodigo() {
+	public Integer getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(int codigo) {
+	public void setCodigo(Integer codigo) {
 		this.codigo = codigo;
 	}
 

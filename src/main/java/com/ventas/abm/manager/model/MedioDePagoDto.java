@@ -1,11 +1,14 @@
 package com.ventas.abm.manager.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.Date;
 
 public class MedioDePagoDto {
 
 	private Long idMedioPago;
-	private int codigo;
+	private Integer codigo;
 	private String detalle;
 	private String tipo;
 	private Boolean habilitado;
@@ -25,11 +28,11 @@ public class MedioDePagoDto {
 		this.idMedioPago = idMedioPago;
 	}
 
-	public int getCodigo() {
+	public Integer getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(int codigo) {
+	public void setCodigo(Integer codigo) {
 		this.codigo = codigo;
 	}
 
