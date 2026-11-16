@@ -4,19 +4,25 @@ import jakarta.persistence.EntityNotFoundException;
 
 public class EntidadNoEncontradaException extends EntityNotFoundException {
 
-    public EntidadNoEncontradaException() {
-    }
+	private static final long serialVersionUID = 1L;
 
-    public EntidadNoEncontradaException(Exception cause) {
-        super(cause);
-    }
+	public EntidadNoEncontradaException() {
+		super();
+	}
 
-    public EntidadNoEncontradaException(String message) {
-        super(message);
-    }
+	public EntidadNoEncontradaException(Exception cause) {
+		super(cause);
+		// TODO Auto-generated constructor stub
+	}
 
-    public EntidadNoEncontradaException(String message, Exception cause) {
-        super(message, cause);
-    }
+	public EntidadNoEncontradaException(String message, Exception cause) {
+		super(message, cause);
+		// TODO Auto-generated constructor stub
+	}
+
+	public EntidadNoEncontradaException(String message) {
+		super(message);
+		// TODO Auto-generated constructor stub
+	}
 
 }

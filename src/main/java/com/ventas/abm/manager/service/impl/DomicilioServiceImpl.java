@@ -1,4 +1,4 @@
-package com.ventas.abm.manager.service;
+package com.ventas.abm.manager.service.impl;
 
 import java.util.Optional;
 
@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ventas.abm.manager.domain.Domicilio;
+import com.ventas.abm.manager.exception.EntidadNoEncontradaException;
 import com.ventas.abm.manager.repository.DomicilioRepository;
+import com.ventas.abm.manager.service.DomicilioService;
 
 @Service
 public class DomicilioServiceImpl implements DomicilioService {
@@ -19,7 +21,7 @@ public class DomicilioServiceImpl implements DomicilioService {
 	private static final Log logger = LogFactory.getLog(DomicilioServiceImpl.class);
 
 	@Override
-	public Domicilio createDomicilio(Domicilio domicilio) throws Exception {
+	public Domicilio createDomicilio(Domicilio domicilio) {
 		// TODO Auto-generated method stub
 		String logMensaje = "Creando registro de Domicilio: " + domicilio.getCalle() + " " + domicilio.getLocalidad()
 				+ " " + domicilio.getPartido() + " " + domicilio.getProvincia() + " " + domicilio.getPais();
@@ -35,20 +37,20 @@ public class DomicilioServiceImpl implements DomicilioService {
 			domicilioNuevo.setProvincia(domicilio.getProvincia());
 			domicilioNuevo.setPais(domicilio.getPais());
 			domicilioRepository.save(domicilioNuevo);
-			logMensaje = "Registrada correctamente Domicilio ID:" + domicilioNuevo.getIdDomicilio();
+			logMensaje = "Registrado correctamente Domicilio ID:" + domicilioNuevo.getIdDomicilio();
 			logger.info(logMensaje);
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
 			logMensaje = e.getMessage();
 			logger.error(logMensaje);
 			e.printStackTrace();
-			throw new Exception(logMensaje);
+			throw new RuntimeException(logMensaje);
 		}
 		return domicilioNuevo;
 	}
 
 	@Override
-	public Domicilio modifyDomicilio(Domicilio domicilio) throws Exception {
+	public Domicilio modifyDomicilio(Domicilio domicilio) {
 		// TODO Auto-generated method stub
 		String logMensaje = "Modificando registro Domicilio ID: " + domicilio.getIdDomicilio();
 		logger.info(logMensaje);
@@ -72,7 +74,7 @@ public class DomicilioServiceImpl implements DomicilioService {
 		} else {
 			logMensaje = "No existe un Domicilio con ID: " + domicilio.getIdDomicilio();
 			logger.error(logMensaje);
-			throw new Exception(logMensaje);
+			throw new EntidadNoEncontradaException(logMensaje);
 		}
 	}
 
@@ -87,7 +89,9 @@ public class DomicilioServiceImpl implements DomicilioService {
 			domicilioRepository.delete(domicilio);
 			logger.info("Domicilio eliminado correctamente con ID: " + idDomicilio);
 		} else {
-			logger.error("No se encontró Domicilio con el ID: " + idDomicilio);
+			logMensaje = "No se encontró Domicilio con el ID: " + idDomicilio;
+			logger.error(logMensaje);
+			throw new EntidadNoEncontradaException(logMensaje);
 		}
 	}
 

@@ -2,11 +2,15 @@ package com.ventas.abm.manager.exception;
 
 public class ErrorValorNuloException extends NullPointerException {
 
-    public ErrorValorNuloException(String s) {
-        super(s);
-    }
+	private static final long serialVersionUID = 1L;
 
-    public ErrorValorNuloException() {
-    }
+	public ErrorValorNuloException() {
+		super();
+	}
+
+	public ErrorValorNuloException(String s) {
+		super(s);
+		// TODO Auto-generated constructor stub
+	}
 
 }

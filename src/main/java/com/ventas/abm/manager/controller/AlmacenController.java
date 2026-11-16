@@ -19,7 +19,6 @@ import com.ventas.abm.manager.domain.Almacen;
 import com.ventas.abm.manager.model.AlmacenDto;
 import com.ventas.abm.manager.service.AlmacenService;
 
-
 @RestController
 @RequestMapping("/almacen")
 public class AlmacenController {
@@ -28,24 +27,24 @@ public class AlmacenController {
 	AlmacenService service;
 
 	@PostMapping
-	public ResponseEntity<Almacen> crearAlmacen(@RequestBody Almacen almacen) {
-		//TODO: process POST request
+	public ResponseEntity<Almacen> crearAlmacen(@RequestBody Almacen almacen) throws Exception {
+		// TODO: process POST request
 		try {
 			Almacen nuevoAlmacen = service.createAlmacen(almacen);
 			return ResponseEntity.ok(nuevoAlmacen);
-		} catch (Exception e) {
+		} catch (ResponseStatusException e) {
 			// TODO: handle exception
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
 	}
 
 	@PutMapping
-	public ResponseEntity<Almacen> modificarAlmacen(@RequestBody Almacen almacen) {
-		//TODO: process PUT request
+	public ResponseEntity<Almacen> modificarAlmacen(@RequestBody Almacen almacen) throws Exception {
+		// TODO: process PUT request
 		try {
 			Almacen modificarAlmacen = service.modifyAlmacen(almacen);
 			return ResponseEntity.ok(modificarAlmacen);
-		} catch (Exception e) {
+		} catch (ResponseStatusException e) {
 			// TODO: handle exception
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
@@ -56,7 +55,7 @@ public class AlmacenController {
 		try {
 			Almacen almacen = service.deleteAlmacen(idAlmacen);
 			return ResponseEntity.ok(almacen);
-		} catch (Exception e) {
+		} catch (ResponseStatusException e) {
 			// TODO: handle exception
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
@@ -67,7 +66,7 @@ public class AlmacenController {
 		try {
 			Almacen almacen = service.getAlmacenById(idAlmacen);
 			return ResponseEntity.ok(almacen);
-		} catch (Exception e) {
+		} catch (ResponseStatusException e) {
 			// TODO: handle exception
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
@@ -78,10 +77,11 @@ public class AlmacenController {
 		try {
 			AlmacenDto almacen = service.getAlmacenByCodigo(codigo);
 			return ResponseEntity.ok(almacen);
-		} catch (Exception e) {
+		} catch (ResponseStatusException e) {
 			// TODO: handle exception
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
+
 	}
 
 	@GetMapping("/descripcion/{descripcion}")
@@ -90,7 +90,7 @@ public class AlmacenController {
 		try {
 			List<AlmacenDto> almacenes = service.getAlmacenByDescripcion(descripcion);
 			return ResponseEntity.ok(almacenes);
-		} catch (Exception e) {
+		} catch (ResponseStatusException e) {
 			// TODO: handle exception
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
 		}
