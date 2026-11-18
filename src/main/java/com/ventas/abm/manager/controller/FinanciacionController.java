@@ -27,80 +27,45 @@ public class FinanciacionController {
 	@PostMapping
 	public ResponseEntity<Financiacion> crearFinanciacion(@RequestBody Financiacion financiacion) {
 		// TODO: process POST request
-		try {
-			Financiacion nuevaFinanciacion = service.createFinanciacion(financiacion);
-			return ResponseEntity.ok(nuevaFinanciacion);
-		} catch (RuntimeException e) {
-			// TODO: handle exception
-			throw new RuntimeException(e.getMessage());
-		}
+		Financiacion nuevaFinanciacion = service.createFinanciacion(financiacion);
+		return ResponseEntity.ok(nuevaFinanciacion);
 	}
 
 	@PutMapping
 	public ResponseEntity<Financiacion> modificarFinanciacion(@RequestBody Financiacion financiacion) {
 		// TODO: process PUT request
-		try {
-			Financiacion modificarFinanciacion = service.modifyFinanciacion(financiacion);
-			return ResponseEntity.ok(modificarFinanciacion);
-		} catch (RuntimeException e) {
-			// TODO: handle exception
-			throw new RuntimeException(e.getMessage());
-		}
+		Financiacion modificarFinanciacion = service.modifyFinanciacion(financiacion);
+		return ResponseEntity.ok(modificarFinanciacion);
 	}
 
 	@DeleteMapping("/{id}")
 	public ResponseEntity<Financiacion> bajaFinanciacion(@PathVariable("id") Long idFinanciacion) {
-		try {
-			Financiacion financiacion = service.deleteFinanciacion(idFinanciacion);
-			return ResponseEntity.ok(financiacion);
-		} catch (RuntimeException e) {
-			// TODO: handle exception
-			throw new RuntimeException(e.getMessage());
-		}
+		Financiacion financiacion = service.deleteFinanciacion(idFinanciacion);
+		return ResponseEntity.ok(financiacion);
 	}
 
 	@GetMapping("/lista/activas")
 	public ResponseEntity<List<FinanciacionDto>> obtenerListaDeFinanciacionActivas() {
-		try {
-			List<FinanciacionDto> financiaciones = service.getAllFinanciacionActiva();
-			return ResponseEntity.ok(financiaciones);
-		} catch (RuntimeException e) {
-			// TODO: handle exception
-			throw new RuntimeException(e.getMessage());
-		}
+		List<FinanciacionDto> financiaciones = service.getAllFinanciacionActiva();
+		return ResponseEntity.ok(financiaciones);
 	}
 
 	@GetMapping("/id/{id}")
 	public ResponseEntity<Financiacion> obtenerFinanciacionPorId(@PathVariable("id") Long idFinanciacion) {
-		try {
-			Financiacion financiacion = service.getFinanciacionById(idFinanciacion);
-			return ResponseEntity.ok(financiacion);
-		} catch (RuntimeException e) {
-			// TODO: handle exception
-			throw new RuntimeException(e.getMessage());
-		}
+		Financiacion financiacion = service.getFinanciacionById(idFinanciacion);
+		return ResponseEntity.ok(financiacion);
 	}
 
 	@GetMapping("/codigo/{codigo}")
 	public ResponseEntity<FinanciacionDto> obtenerFinanciacionPorCodigo(@PathVariable("codigo") Integer codigo) {
-		try {
-			FinanciacionDto financiacion = service.getFinanciacionByCodigo(codigo);
-			return ResponseEntity.ok(financiacion);
-		} catch (RuntimeException e) {
-			// TODO: handle exception
-			throw new RuntimeException(e.getMessage());
-		}
+		FinanciacionDto financiacion = service.getFinanciacionByCodigo(codigo);
+		return ResponseEntity.ok(financiacion);
 	}
 
 	@GetMapping("/descripcion/{descripcion}")
 	public List<FinanciacionDto> obtenerFinanciacionPorDescripcion(@PathVariable("descripcion") String descripcion) {
-		try {
-			List<FinanciacionDto> financiaciones = service.getFinanciacionByDescripcion(descripcion);
-			return financiaciones;
-		} catch (RuntimeException e) {
-			// TODO: handle exception
-			throw new RuntimeException(e.getMessage());
-		}
+		List<FinanciacionDto> financiaciones = service.getFinanciacionByDescripcion(descripcion);
+		return financiaciones;
 	}
 
 }

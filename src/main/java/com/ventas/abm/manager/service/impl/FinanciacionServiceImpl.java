@@ -155,7 +155,7 @@ public class FinanciacionServiceImpl implements FinanciacionService {
 							listaPlanescuotaActualizada.add(pcNuevo);
 						}
 					}
-					financiacionEnBd.getPlanCuota().clear();
+					//financiacionEnBd.getPlanCuota().clear();
 					financiacionEnBd.setPlanCuota(listaPlanescuotaActualizada);
 				}
 				Financiacion financiacionModificado = financiacionRepository.save(financiacionEnBd);

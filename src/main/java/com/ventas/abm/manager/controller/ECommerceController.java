@@ -21,25 +21,15 @@ public class ECommerceController {
 	@PostMapping()
 	public ResponseEntity<ECommerce> crearECommerce(@RequestBody ECommerce ecommerce) {
 		// TODO: process POST request
-		try {
-			ECommerce nuevoECommerce = ecommerceService.createECommerce(ecommerce);
-			return ResponseEntity.ok(nuevoECommerce);
-		} catch (RuntimeException e) {
-			// TODO: handle exception
-			throw new RuntimeException(e.getMessage());
-		}
+		ECommerce nuevoECommerce = ecommerceService.createECommerce(ecommerce);
+		return ResponseEntity.ok(nuevoECommerce);
 	}
 
 	@PutMapping()
 	public ResponseEntity<ECommerce> modificarECommerce(@RequestBody ECommerce ecommerce) {
 		// TODO: process PUT request
-		try {
-			ECommerce ecommerceModificado = ecommerceService.modifyECommerce(ecommerce);
-			return ResponseEntity.ok(ecommerceModificado);
-		} catch (RuntimeException e) {
-			// TODO: handle exception
-			throw new RuntimeException(e.getMessage());
-		}
+		ECommerce ecommerceModificado = ecommerceService.modifyECommerce(ecommerce);
+		return ResponseEntity.ok(ecommerceModificado);
 	}
 
 }

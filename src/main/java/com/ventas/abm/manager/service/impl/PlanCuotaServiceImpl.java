@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ventas.abm.manager.domain.PlanCuota;
+import com.ventas.abm.manager.exception.EntidadNoEncontradaException;
 import com.ventas.abm.manager.repository.PlanCuotaRepository;
 import com.ventas.abm.manager.service.PlanCuotaService;
 
@@ -51,7 +52,7 @@ public class PlanCuotaServiceImpl implements PlanCuotaService {
 		if (!optional.isPresent()) {
 			logMensaje = "No existe un Plan cuota con ID: " + planCuota.getId();
 			logger.info(logMensaje);
-			throw new Exception(logMensaje);
+			throw new EntidadNoEncontradaException(logMensaje);
 		}
 		PlanCuota planCuotaEnBd = optional.get();
 		try {

@@ -42,13 +42,13 @@ public class LocalServiceImpl implements LocalService {
 			throw new ErrorIntegridadException(logMensaje);
 		}
 		if (local.getCodigo() != null) {
-		Optional<Local> verificarCodigoLocal = localRepository.findByCodigo(local.getCodigo());
-		if (verificarCodigoLocal.isPresent()) {
-			logMensaje = "Existe un registro de Local con el Código: " + local.getCodigo();
-			logger.error(logMensaje);
-			throw new ExisteEntidadCodigoException(logMensaje);
-		}
-		else {
+			Optional<Local> verificarCodigoLocal = localRepository.findByCodigo(local.getCodigo());
+			if (verificarCodigoLocal.isPresent()) {
+				logMensaje = "Existe un registro de Local con el Código: " + local.getCodigo();
+				logger.error(logMensaje);
+				throw new ExisteEntidadCodigoException(logMensaje);
+			}
+		} else {
 			logMensaje = "El código de Tienda es requerido";
 			logger.error(logMensaje);
 			throw new ErrorValorNuloException(logMensaje);
