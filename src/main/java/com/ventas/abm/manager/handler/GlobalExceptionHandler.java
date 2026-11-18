@@ -25,22 +25,22 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorDto);
 	}
 
-	@ExceptionHandler(ErrorIntegridadException.class)
+	@ExceptionHandler(value = ErrorIntegridadException.class, produces = "aplication/json")
 	public ResponseEntity<ErrorResponseDto> HandleErrorIntegrity(ErrorIntegridadException e) {
 		ErrorResponseDto errorDto = new ErrorResponseDto();
 		errorDto.setTimestamp(LocalDateTime.now());
 		errorDto.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		errorDto.setMessage(e.getMessage());
-		return new ResponseEntity<>(errorDto, HttpStatus.INTERNAL_SERVER_ERROR);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDto);
 	}
 
-	@ExceptionHandler(ErrorValorNuloException.class)
+	@ExceptionHandler(value = ErrorValorNuloException.class, produces = "aplication/json")
 	public ResponseEntity<ErrorResponseDto> handlerErrorNullValue(ErrorValorNuloException e) {
 		ErrorResponseDto errorDto = new ErrorResponseDto();
 		errorDto.setTimestamp(LocalDateTime.now());
 		errorDto.setStatus(HttpStatus.INTERNAL_SERVER_ERROR.value());
 		errorDto.setMessage(e.getMessage());
-		return new ResponseEntity<>(errorDto, HttpStatus.INTERNAL_SERVER_ERROR);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorDto);
 	}
 
 	@ExceptionHandler(value = ExisteEntidadCodigoException.class, produces = "application/json")

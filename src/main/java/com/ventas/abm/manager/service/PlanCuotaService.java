@@ -4,12 +4,12 @@ import com.ventas.abm.manager.domain.PlanCuota;
 
 public interface PlanCuotaService {
 
-	PlanCuota createPlanCuota(PlanCuota planCuota) throws Exception;
+	PlanCuota createPlanCuota(PlanCuota planCuota);
 
-	PlanCuota updatePlanCuota(PlanCuota planCuota) throws Exception;
+	PlanCuota updatePlanCuota(PlanCuota planCuota);
 
-	void deletePlanCuota(Long id) throws Exception;
+	void deletePlanCuota(Long id);
 
-	PlanCuota getPlanCuotaById(Long id) throws Exception;
+	PlanCuota getPlanCuotaById(Long id);
 
 }

@@ -7,18 +7,18 @@ import com.ventas.abm.manager.model.FinanciacionDto;
 
 public interface FinanciacionService {
 
-	Financiacion createFinanciacion(Financiacion financiacion) throws Exception;
+	Financiacion createFinanciacion(Financiacion financiacion);
 
-	Financiacion modifyFinanciacion(Financiacion financiacion) throws Exception;
+	Financiacion modifyFinanciacion(Financiacion financiacion);
 
-	Financiacion deleteFinanciacion(Long idFinanciacion) throws Exception;
+	Financiacion deleteFinanciacion(Long idFinanciacion);
 
-	List<FinanciacionDto> getAllFinanciacionActiva() throws Exception;
+	List<FinanciacionDto> getAllFinanciacionActiva();
 
 	Financiacion getFinanciacionById(Long idFinanciacion);
 
-	FinanciacionDto getFinanciacionByCodigo(Integer codigo) throws Exception;
+	FinanciacionDto getFinanciacionByCodigo(Integer codigo);
 
-	List<FinanciacionDto> getFinanciacionByDescripcion(String descripcion) throws Exception;
+	List<FinanciacionDto> getFinanciacionByDescripcion(String descripcion);
 
 }

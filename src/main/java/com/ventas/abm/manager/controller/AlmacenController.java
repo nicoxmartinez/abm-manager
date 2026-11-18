@@ -32,9 +32,9 @@ public class AlmacenController {
 		try {
 			Almacen nuevoAlmacen = service.createAlmacen(almacen);
 			return ResponseEntity.ok(nuevoAlmacen);
-		} catch (ResponseStatusException e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
@@ -44,9 +44,9 @@ public class AlmacenController {
 		try {
 			Almacen modificarAlmacen = service.modifyAlmacen(almacen);
 			return ResponseEntity.ok(modificarAlmacen);
-		} catch (ResponseStatusException e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
@@ -55,9 +55,9 @@ public class AlmacenController {
 		try {
 			Almacen almacen = service.deleteAlmacen(idAlmacen);
 			return ResponseEntity.ok(almacen);
-		} catch (ResponseStatusException e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
@@ -66,9 +66,9 @@ public class AlmacenController {
 		try {
 			Almacen almacen = service.getAlmacenById(idAlmacen);
 			return ResponseEntity.ok(almacen);
-		} catch (ResponseStatusException e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
@@ -77,9 +77,9 @@ public class AlmacenController {
 		try {
 			AlmacenDto almacen = service.getAlmacenByCodigo(codigo);
 			return ResponseEntity.ok(almacen);
-		} catch (ResponseStatusException e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 
 	}
@@ -90,9 +90,9 @@ public class AlmacenController {
 		try {
 			List<AlmacenDto> almacenes = service.getAlmacenByDescripcion(descripcion);
 			return ResponseEntity.ok(almacenes);
-		} catch (ResponseStatusException e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 

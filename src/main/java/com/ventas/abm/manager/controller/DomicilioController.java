@@ -25,9 +25,9 @@ public class DomicilioController {
 		try {
 			service.deleteDomicilio(idDomicilio);
 			return (ResponseEntity<?>) ResponseEntity.ok();
-		} catch (ResponseStatusException e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
@@ -36,9 +36,9 @@ public class DomicilioController {
 		try {
 			Domicilio domicilio = service.getDomicilioById(idDomicilio);
 			return ResponseEntity.ok(domicilio);
-		} catch (ResponseStatusException e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 

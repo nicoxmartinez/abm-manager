@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.ventas.abm.manager.domain.Domicilio;
 import com.ventas.abm.manager.exception.EntidadNoEncontradaException;
+import com.ventas.abm.manager.exception.ErrorIntegridadException;
 import com.ventas.abm.manager.repository.DomicilioRepository;
 import com.ventas.abm.manager.service.DomicilioService;
 
@@ -26,6 +27,10 @@ public class DomicilioServiceImpl implements DomicilioService {
 		String logMensaje = "Creando registro de Domicilio: " + domicilio.getCalle() + " " + domicilio.getLocalidad()
 				+ " " + domicilio.getPartido() + " " + domicilio.getProvincia() + " " + domicilio.getPais();
 		logger.info(logMensaje);
+		if (domicilio.getIdDomicilio() != null) {
+			logMensaje = "La creacion de Domicilio no puede tener ID: " + domicilio.getIdDomicilio();
+			throw new ErrorIntegridadException(logMensaje);
+		}
 		Domicilio domicilioNuevo = new Domicilio();
 		try {
 			domicilioNuevo.setCalle(domicilio.getCalle());

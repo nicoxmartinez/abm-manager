@@ -3,7 +3,6 @@ package com.ventas.abm.manager.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import com.ventas.abm.manager.domain.Financiacion;
 import com.ventas.abm.manager.model.FinanciacionDto;
@@ -28,25 +26,25 @@ public class FinanciacionController {
 
 	@PostMapping
 	public ResponseEntity<Financiacion> crearFinanciacion(@RequestBody Financiacion financiacion) {
-		//TODO: process POST request
+		// TODO: process POST request
 		try {
 			Financiacion nuevaFinanciacion = service.createFinanciacion(financiacion);
 			return ResponseEntity.ok(nuevaFinanciacion);
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
 	@PutMapping
 	public ResponseEntity<Financiacion> modificarFinanciacion(@RequestBody Financiacion financiacion) {
-		//TODO: process PUT request
+		// TODO: process PUT request
 		try {
 			Financiacion modificarFinanciacion = service.modifyFinanciacion(financiacion);
 			return ResponseEntity.ok(modificarFinanciacion);
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
@@ -55,9 +53,9 @@ public class FinanciacionController {
 		try {
 			Financiacion financiacion = service.deleteFinanciacion(idFinanciacion);
 			return ResponseEntity.ok(financiacion);
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
@@ -66,9 +64,9 @@ public class FinanciacionController {
 		try {
 			List<FinanciacionDto> financiaciones = service.getAllFinanciacionActiva();
 			return ResponseEntity.ok(financiaciones);
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
@@ -77,9 +75,9 @@ public class FinanciacionController {
 		try {
 			Financiacion financiacion = service.getFinanciacionById(idFinanciacion);
 			return ResponseEntity.ok(financiacion);
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
@@ -88,9 +86,9 @@ public class FinanciacionController {
 		try {
 			FinanciacionDto financiacion = service.getFinanciacionByCodigo(codigo);
 			return ResponseEntity.ok(financiacion);
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 
@@ -99,9 +97,9 @@ public class FinanciacionController {
 		try {
 			List<FinanciacionDto> financiaciones = service.getFinanciacionByDescripcion(descripcion);
 			return financiaciones;
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
-			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+			throw new RuntimeException(e.getMessage());
 		}
 	}
 

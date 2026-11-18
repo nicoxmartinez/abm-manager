@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.ventas.abm.manager.domain.Domicilio;
 import com.ventas.abm.manager.domain.Local;
+import com.ventas.abm.manager.exception.EntidadNoEncontradaException;
+import com.ventas.abm.manager.exception.ErrorIntegridadException;
+import com.ventas.abm.manager.exception.ErrorValorNuloException;
+import com.ventas.abm.manager.exception.ExisteEntidadCodigoException;
 import com.ventas.abm.manager.repository.LocalRepository;
 import com.ventas.abm.manager.service.DomicilioService;
 import com.ventas.abm.manager.service.LocalService;
@@ -29,17 +33,26 @@ public class LocalServiceImpl implements LocalService {
 
 	@Override
 	@Transactional
-	public Local createLocal(Local local) throws Exception {
+	public Local createLocal(Local local) {
 		// TODO Auto-generated method stub
 		String logMensaje = "Creando registro de Local: " + local.getCodigo() + " " + local.getDescripcion();
 		logger.info(logMensaje);
+		if (local.getIdTienda() != null) {
+			logMensaje = "La creacion de Local no puede tener ID: " + local.getIdTienda();
+			throw new ErrorIntegridadException(logMensaje);
+		}
+		if (local.getCodigo() != null) {
 		Optional<Local> verificarCodigoLocal = localRepository.findByCodigo(local.getCodigo());
 		if (verificarCodigoLocal.isPresent()) {
 			logMensaje = "Existe un registro de Local con el Código: " + local.getCodigo();
 			logger.error(logMensaje);
-			throw new Exception(logMensaje);
+			throw new ExisteEntidadCodigoException(logMensaje);
 		}
-
+		else {
+			logMensaje = "El código de Tienda es requerido";
+			logger.error(logMensaje);
+			throw new ErrorValorNuloException(logMensaje);
+		}
 		Local nuevoLocal = new Local();
 		try {
 			// Datos de Tienda
@@ -64,55 +77,62 @@ public class LocalServiceImpl implements LocalService {
 			localRepository.save(nuevoLocal);
 			logMensaje = "Registrado correctamente Local ID: " + nuevoLocal.getIdTienda();
 			logger.info(logMensaje);
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
 			logMensaje = e.getMessage();
 			logger.error(logMensaje);
 			e.printStackTrace();
-			throw new Exception(logMensaje);
+			throw new RuntimeException(logMensaje);
 		}
 		return nuevoLocal;
 	}
 
 	@Override
 	@Transactional
-	public Local modifyLocal(Local local) throws Exception {
+	public Local modifyLocal(Local local) {
 		// TODO Auto-generated method stub
 		String logMensaje = "Modificando registro de Local ID: " + local.getIdTienda();
-		Optional<Local> localOptional = localRepository.findById(local.getIdTienda());
-		if (localOptional.isPresent()) {
-			Local localEnBd = localOptional.get();
-			// Datos de Tienda
-			localEnBd.setCodigo(local.getCodigo());
-			localEnBd.setDescripcion(local.getDescripcion());
-			localEnBd.setUsuario(local.getUsuario());
-			localEnBd.setEmail(local.getEmail());
-			localEnBd.setTelefono(local.getTelefono());
-			localEnBd.setFechaAlta(local.getFechaAlta());
-			localEnBd.setFechaBaja(local.getFechaBaja());
-			// Datos de Domicilio
-			if (local.getDomicilio() != null) {
-				Domicilio domicilioLocal = local.getDomicilio();
-				if (domicilioLocal.getIdDomicilio() != null) {
-					Domicilio domicilioModificado = domicilioService.modifyDomicilio(domicilioLocal);
-					localEnBd.setDomicilio(domicilioModificado);
-				} else {
-					Domicilio nuevoDomicilio = domicilioService.createDomicilio(domicilioLocal);
-					localEnBd.setDomicilio(nuevoDomicilio);
+		logger.info(logMensaje);
+		if (local.getIdTienda() != null) {
+			Optional<Local> localOptional = localRepository.findById(local.getIdTienda());
+			if (localOptional.isPresent()) {
+				Local localEnBd = localOptional.get();
+				// Datos de Tienda
+				localEnBd.setCodigo(local.getCodigo());
+				localEnBd.setDescripcion(local.getDescripcion());
+				localEnBd.setUsuario(local.getUsuario());
+				localEnBd.setEmail(local.getEmail());
+				localEnBd.setTelefono(local.getTelefono());
+				localEnBd.setFechaAlta(local.getFechaAlta());
+				localEnBd.setFechaBaja(local.getFechaBaja());
+				// Datos de Domicilio
+				if (local.getDomicilio() != null) {
+					Domicilio domicilioLocal = local.getDomicilio();
+					if (domicilioLocal.getIdDomicilio() != null) {
+						Domicilio domicilioModificado = domicilioService.modifyDomicilio(domicilioLocal);
+						localEnBd.setDomicilio(domicilioModificado);
+					} else {
+						Domicilio nuevoDomicilio = domicilioService.createDomicilio(domicilioLocal);
+						localEnBd.setDomicilio(nuevoDomicilio);
+					}
+				} else if (localEnBd.getDomicilio() != null) {
+					domicilioService.deleteDomicilio(localEnBd.getDomicilio().getIdDomicilio());
+					localEnBd.setDomicilio(null);
 				}
-			} else if (localEnBd.getDomicilio() != null) {
-				domicilioService.deleteDomicilio(localEnBd.getDomicilio().getIdDomicilio());
-				localEnBd.setDomicilio(null);
+				Local localModificado = localRepository.save(localEnBd);
+				logMensaje = "Modificado correctamente Local: " + localModificado.getCodigo() + " "
+						+ localModificado.getDescripcion();
+				logger.info(logMensaje);
+				return localModificado;
+			} else {
+				logMensaje = "No existe un Local con ID: " + local.getIdTienda();
+				logger.error(logMensaje);
+				throw new EntidadNoEncontradaException(logMensaje);
 			}
-			Local localModificado = localRepository.save(localEnBd);
-			logMensaje = "Modificado correctamente Local: " + localModificado.getCodigo() + " "
-					+ localModificado.getDescripcion();
-			logger.info(logMensaje);
-			return localModificado;
 		} else {
-			logMensaje = "No existe un Local con ID: " + local.getIdTienda();
+			logMensaje = "El Local ID es requerido: " + local.getIdTienda();
 			logger.error(logMensaje);
-			throw new Exception(logMensaje);
+			throw new ErrorValorNuloException(logMensaje);
 		}
 	}
 

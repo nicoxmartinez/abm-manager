@@ -13,6 +13,7 @@ import com.ventas.abm.manager.domain.Almacen;
 import com.ventas.abm.manager.domain.Domicilio;
 import com.ventas.abm.manager.domain.Tienda;
 import com.ventas.abm.manager.exception.EntidadNoEncontradaException;
+import com.ventas.abm.manager.exception.ErrorIntegridadException;
 import com.ventas.abm.manager.exception.ErrorValorNuloException;
 import com.ventas.abm.manager.exception.ExisteEntidadCodigoException;
 import com.ventas.abm.manager.mapper.AlmacenMapper;
@@ -46,6 +47,10 @@ public class AlmacenServiceImpl implements AlmacenService {
 	public Almacen createAlmacen(Almacen almacen) {
 		String logMensaje = "Creando registro de Almacén: " + almacen.getCodigo() + " " + almacen.getDescripcion();
 		logger.info(logMensaje);
+		if (almacen.getIdAlmacen() != null) {
+			logMensaje = "La creacion de Almacén no puede tener ID: " + almacen.getIdAlmacen();
+			throw new ErrorIntegridadException(logMensaje);
+		}
 		if (almacen.getCodigo() != null) {
 			Optional<Almacen> verificarCodigoAlmacen = almacenRepository.findByCodigo(almacen.getCodigo());
 			if (verificarCodigoAlmacen.isPresent()) {
@@ -54,7 +59,7 @@ public class AlmacenServiceImpl implements AlmacenService {
 				throw new ExisteEntidadCodigoException(logMensaje);
 			}
 		} else {
-			logMensaje = "El código de Almacén es reuerido";
+			logMensaje = "El código de Almacén es requerido";
 			logger.error(logMensaje);
 			throw new ErrorValorNuloException(logMensaje);
 		}
@@ -102,50 +107,56 @@ public class AlmacenServiceImpl implements AlmacenService {
 	public Almacen modifyAlmacen(Almacen almacen) {
 		String logMensaje = "Modificando registro Almacén ID: " + almacen.getIdAlmacen();
 		logger.info(logMensaje);
-		Optional<Almacen> almacenOptional = almacenRepository.findById(almacen.getIdAlmacen());
-		if (almacenOptional.isPresent()) {
-			Almacen almacenEnBd = almacenOptional.get();
-			if (almacen.getTienda() != null) {
-				Optional<Tienda> tiendaOptional = tiendaRepository.findById(almacen.getTienda().getIdTienda());
-				if (tiendaOptional.isPresent()) {
-					Tienda tienda = tiendaOptional.get();
-					almacenEnBd.setTienda(tienda);
+		if (almacen.getIdAlmacen() != null) {
+			Optional<Almacen> almacenOptional = almacenRepository.findById(almacen.getIdAlmacen());
+			if (almacenOptional.isPresent()) {
+				Almacen almacenEnBd = almacenOptional.get();
+				if (almacen.getTienda() != null) {
+					Optional<Tienda> tiendaOptional = tiendaRepository.findById(almacen.getTienda().getIdTienda());
+					if (tiendaOptional.isPresent()) {
+						Tienda tienda = tiendaOptional.get();
+						almacenEnBd.setTienda(tienda);
+					}
+				} else {
+					logMensaje = "Ingrese a que Tienda pertenece el Almacén";
+					logger.error(logMensaje);
+					throw new ErrorValorNuloException(logMensaje);
 				}
-			} else {
-				logMensaje = "Ingrese a que Tienda pertenece el Almacén";
-				logger.error(logMensaje);
-				throw new ErrorValorNuloException(logMensaje);
-			}
-			almacenEnBd.setCodigo(almacen.getCodigo());
-			almacenEnBd.setDescripcion(almacen.getDescripcion());
-			almacenEnBd.setFechaBaja(almacen.getFechaBaja());
-			if (almacen.getDomicilio() != null) {
-				Domicilio domicilioAlmacen = almacen.getDomicilio();
-				if (domicilioAlmacen.getIdDomicilio() != null) {
-					Domicilio domicilioModificado = domicilioService.modifyDomicilio(domicilioAlmacen);
-					almacenEnBd.setDomicilio(domicilioModificado);
+				almacenEnBd.setCodigo(almacen.getCodigo());
+				almacenEnBd.setDescripcion(almacen.getDescripcion());
+				almacenEnBd.setFechaBaja(almacen.getFechaBaja());
+				if (almacen.getDomicilio() != null) {
+					Domicilio domicilioAlmacen = almacen.getDomicilio();
+					if (domicilioAlmacen.getIdDomicilio() != null) {
+						Domicilio domicilioModificado = domicilioService.modifyDomicilio(domicilioAlmacen);
+						almacenEnBd.setDomicilio(domicilioModificado);
+					} else {
+						if (almacenEnBd.getDomicilio() != null && almacenEnBd.getDomicilio().getIdDomicilio() != null) {
+							domicilioService.deleteDomicilio(almacenEnBd.getDomicilio().getIdDomicilio());
+						}
+						Domicilio nuevoDomicilio = domicilioService.createDomicilio(domicilioAlmacen);
+						almacenEnBd.setDomicilio(nuevoDomicilio);
+					}
 				} else {
 					if (almacenEnBd.getDomicilio() != null && almacenEnBd.getDomicilio().getIdDomicilio() != null) {
 						domicilioService.deleteDomicilio(almacenEnBd.getDomicilio().getIdDomicilio());
 					}
-					Domicilio nuevoDomicilio = domicilioService.createDomicilio(domicilioAlmacen);
-					almacenEnBd.setDomicilio(nuevoDomicilio);
+					almacenEnBd.setDomicilio(null);
 				}
+				Almacen almacenModificado = almacenRepository.save(almacenEnBd);
+				logMensaje = "Modificado correctamente Almacén: " + almacenModificado.getCodigo() + " "
+						+ almacenModificado.getDescripcion();
+				logger.info(logMensaje);
+				return almacenModificado;
 			} else {
-				if (almacenEnBd.getDomicilio() != null && almacenEnBd.getDomicilio().getIdDomicilio() != null) {
-					domicilioService.deleteDomicilio(almacenEnBd.getDomicilio().getIdDomicilio());
-				}
-				almacenEnBd.setDomicilio(null);
+				logMensaje = "No existe un Almacén con ID: " + almacen.getIdAlmacen();
+				logger.error(logMensaje);
+				throw new EntidadNoEncontradaException(logMensaje);
 			}
-			Almacen almacenModificado = almacenRepository.save(almacenEnBd);
-			logMensaje = "Modificado correctamente Almacén: " + almacenModificado.getCodigo() + " "
-					+ almacenModificado.getDescripcion();
-			logger.info(logMensaje);
-			return almacenModificado;
 		} else {
-			logMensaje = "No existe un Almacén con ID: " + almacen.getIdAlmacen();
+			logMensaje = "El Almacén ID es requerido: " + almacen.getIdAlmacen();
 			logger.error(logMensaje);
-			throw new EntidadNoEncontradaException(logMensaje);
+			throw new ErrorValorNuloException(logMensaje);
 		}
 	}
 

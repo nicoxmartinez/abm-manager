@@ -20,7 +20,7 @@ public class PlanCuotaServiceImpl implements PlanCuotaService {
 	private static final Log logger = LogFactory.getLog(PlanCuotaServiceImpl.class);
 
 	@Override
-	public PlanCuota createPlanCuota(PlanCuota planCuota) throws Exception {
+	public PlanCuota createPlanCuota(PlanCuota planCuota) {
 		// TODO Auto-generated method stub
 		String logMensaje = "Creando registro de Plan cuota " + planCuota.getCantidadCuotas();
 		logger.info(logMensaje);
@@ -33,17 +33,17 @@ public class PlanCuotaServiceImpl implements PlanCuotaService {
 			logMensaje = "Registrada correctamente ID: " + planCuotaNuevo.getId();
 			logger.info(logMensaje);
 			return planCuotaNuevo;
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
 			logMensaje = "Ocurrió un error en el Plan Cuota: " + e.getMessage();
 			logger.error(logMensaje);
 			e.printStackTrace();
-			throw new Exception(logMensaje);
+			throw new RuntimeException(logMensaje);
 		}
 	}
 
 	@Override
-	public PlanCuota updatePlanCuota(PlanCuota planCuota) throws Exception {
+	public PlanCuota updatePlanCuota(PlanCuota planCuota) {
 		// TODO Auto-generated method stub
 		String logMensaje = "Modificando registro Plan cuota ID: " + planCuota.getId();
 		logger.info(logMensaje);
@@ -61,17 +61,17 @@ public class PlanCuotaServiceImpl implements PlanCuotaService {
 			logMensaje = "Modificado correctamente ID Plan Cuota: " + planCuotaEnBd.getId();
 			logger.info(logMensaje);
 			return planCuotaEnBd;
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
 			logMensaje = "Ocurrio un error en el Plan Cuota: " + e.getMessage();
 			logger.error(logMensaje);
 			e.printStackTrace();
-			throw new Exception(logMensaje);
+			throw new RuntimeException(logMensaje);
 		}
 	}
 
 	@Override
-	public void deletePlanCuota(Long id) throws Exception {
+	public void deletePlanCuota(Long id) {
 		// TODO Auto-generated method stub
 		String logMensaje = "Eliminando Plan Cuota ID: " + id;
 		try {
@@ -79,18 +79,18 @@ public class PlanCuotaServiceImpl implements PlanCuotaService {
 			if (planOptional.isPresent()) {
 				planCuotaRepository.delete(planOptional.get());
 			}
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
 			logMensaje = "Ocurrio un error en el Plan Cuota: " + e.getMessage();
 			logger.error(logMensaje);
 			e.printStackTrace();
-			throw new Exception(logMensaje);
+			throw new RuntimeException(logMensaje);
 		}
 
 	}
 
 	@Override
-	public PlanCuota getPlanCuotaById(Long id) throws Exception {
+	public PlanCuota getPlanCuotaById(Long id) {
 		// TODO Auto-generated method stub
 		PlanCuota planCuota = new PlanCuota();
 		try {
@@ -99,12 +99,12 @@ public class PlanCuotaServiceImpl implements PlanCuotaService {
 				planCuota = planOptional.get();
 			}
 			return planCuota;
-		} catch (Exception e) {
+		} catch (RuntimeException e) {
 			// TODO: handle exception
 			String logMensaje = e.getMessage();
 			logger.error(logMensaje);
 			e.printStackTrace();
-			throw new Exception(logMensaje);
+			throw new RuntimeException(logMensaje);
 		}
 	}
 
