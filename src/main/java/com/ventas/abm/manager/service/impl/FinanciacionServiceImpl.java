@@ -110,31 +110,29 @@ public class FinanciacionServiceImpl implements FinanciacionService {
 				financiacionEnBd.setDescripcion(financiacion.getDescripcion());
 				financiacionEnBd.setActiva(financiacion.getActiva());
 				// Datos de Plan Cuotas
-				List<PlanCuota> listaPlanescuotaActualizada = new ArrayList<>();
 				if (financiacion.getPlanCuota() != null && !financiacion.getPlanCuota().isEmpty()) {
+					List<PlanCuota> listaPlanescuotaActualizada = new ArrayList<>();
 					// Coleccion de Plan cuotas en DB
-					List<PlanCuota> planesCuotasExistentes = financiacionEnBd.getPlanCuota().stream()
+					List<PlanCuota> planesCuotasActualizar = financiacion.getPlanCuota().stream()
 							.filter(pc -> pc.getId() != null).collect(Collectors.toList());
 					// Nueva coleccion de Plan cuotas
 					List<PlanCuota> planesCuotasNuevos = financiacion.getPlanCuota().stream()
 							.filter(pc -> pc.getId() == null).collect(Collectors.toList());
 					// Plan cuotas descartados
-					List<PlanCuota> planesParaEliminar = planesCuotasExistentes.stream().filter(
+					List<PlanCuota> planesParaEliminar = financiacionEnBd.getPlanCuota().stream().filter(
 							pDb -> financiacion.getPlanCuota().stream().noneMatch(pc -> pDb.getId().equals(pc.getId())))
 							.collect(Collectors.toList());
+					// Limpiar lista existente
+					financiacionEnBd.getPlanCuota().clear();
 					// Elimina Planes cuotas descartados
 					if (planesParaEliminar != null && !planesParaEliminar.isEmpty()) {
 						for (PlanCuota pc : planesParaEliminar) {
 							planCuotaService.deletePlanCuota(pc.getId());
 						}
-						financiacionEnBd.getPlanCuota().clear();
-						financiacionEnBd.setPlanCuota(null);
-						planesCuotasExistentes.clear();
-						planesCuotasExistentes = null;
 					}
 					// Modifica Planes cuotas existentes
-					if (planesCuotasExistentes != null && !planesCuotasExistentes.isEmpty()) {
-						for (PlanCuota pc : planesCuotasExistentes) {
+					if (planesCuotasActualizar != null && !planesCuotasActualizar.isEmpty()) {
+						for (PlanCuota pc : planesCuotasActualizar) {
 							PlanCuota pcExistenteModificado = planCuotaService.updatePlanCuota(pc);
 							if (pcExistenteModificado == null) {
 								logger.error("No se encontró el PlanCuota con ID: " + pc.getId());
@@ -155,8 +153,14 @@ public class FinanciacionServiceImpl implements FinanciacionService {
 							listaPlanescuotaActualizada.add(pcNuevo);
 						}
 					}
-					//financiacionEnBd.getPlanCuota().clear();
 					financiacionEnBd.setPlanCuota(listaPlanescuotaActualizada);
+				} else if (financiacionEnBd.getPlanCuota() != null && !financiacionEnBd.getPlanCuota().isEmpty()) {
+					// limpia la lista de Planes Cuota en BD
+					List<PlanCuota> limpiarPlanesCuota = financiacionEnBd.getPlanCuota();
+					for (PlanCuota pc : limpiarPlanesCuota) {
+						planCuotaService.deletePlanCuota(pc.getId());
+					}
+					financiacionEnBd.getPlanCuota().clear();
 				}
 				Financiacion financiacionModificado = financiacionRepository.save(financiacionEnBd);
 				logMensaje = "Modificado correctamente Financiacion: " + financiacionModificado.getCodigo() + " "
